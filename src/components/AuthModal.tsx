@@ -47,7 +47,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
     setTimeout(() => {
       setLoading(false);
       onOpenChange(false);
-      navigate("/missoes");
+      navigate("/tarefas");
     }, 1000);
   };
 
