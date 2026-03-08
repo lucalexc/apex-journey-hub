@@ -54,6 +54,13 @@
     --phase-locked: 215 20% 65%;
     --glass: 0 0% 100% / 0.6;
     --glass-border: 0 0% 100% / 0.3;
+
+    /* Identity / Biohacking tokens */
+    --bio-primary: 243 75% 59%;
+    --bio-secondary: 221 83% 53%;
+    --bio-accent: 187 85% 53%;
+    --bio-glow: 243 75% 59% / 0.15;
+    --layer-highlight: 221 83% 53%;
   }
 
   .dark {
