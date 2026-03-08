@@ -81,8 +81,8 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
 
               {/* LOGIN */}
               <TabsContent value="login">
-                <h2 className="text-2xl font-bold mb-1">Bem-vindo de volta</h2>
-                <p className="text-sm text-muted-foreground mb-6">Entre na sua conta para continuar.</p>
+                <h2 className="text-2xl font-bold mb-1 text-[hsl(var(--landing-fg))]">Bem-vindo de volta</h2>
+                <p className="text-sm text-[hsl(var(--landing-muted))] mb-6">Entre na sua conta para continuar.</p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
