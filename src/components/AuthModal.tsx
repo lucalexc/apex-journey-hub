@@ -86,17 +86,17 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email">E-mail</Label>
-                    <Input id="login-email" type="email" placeholder="seu@email.com" required />
+                    <Label htmlFor="login-email" className="text-[hsl(var(--landing-fg))]">E-mail</Label>
+                    <Input id="login-email" type="email" placeholder="seu@email.com" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label htmlFor="login-password">Senha</Label>
+                      <Label htmlFor="login-password" className="text-[hsl(var(--landing-fg))]">Senha</Label>
                       <button type="button" className="text-xs text-primary hover:underline">
                         Esqueci minha senha
                       </button>
                     </div>
-                    <Input id="login-password" type="password" placeholder="••••••••" required />
+                    <Input id="login-password" type="password" placeholder="••••••••" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
                   </div>
                   <Button type="submit" className="w-full rounded-full font-bold h-11" disabled={loading}>
                     {loading ? "Processando..." : "Entrar"}
