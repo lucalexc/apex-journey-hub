@@ -10,6 +10,7 @@ import MetasPage from "@/pages/MetasPage";
 import RotinaPage from "@/pages/RotinaPage";
 import QuemSouPage from "@/pages/QuemSouPage";
 import BibliotecaPage from "@/pages/BibliotecaPage";
+import LandingPage from "@/pages/LandingPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
