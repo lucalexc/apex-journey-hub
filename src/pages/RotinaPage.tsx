@@ -293,23 +293,17 @@ export default function RotinaPage() {
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label>Nome do Hábito</Label>
+              <Label>Nome da Atividade</Label>
               <Input placeholder='Ex: "Tomar Água"' value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label>Período</Label>
-              <Select value={period} onValueChange={(v) => setPeriod(v as Period)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                   <SelectItem value="morning">Manhã (05h–12h)</SelectItem>
-                   <SelectItem value="afternoon">Tarde (12h–18h)</SelectItem>
-                   <SelectItem value="night">Noite (18h–23h)</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
             <div className="space-y-2">
               <Label>Horário</Label>
               <TimeInput24h value={time} onChange={setTime} />
+              {time.length === 5 && (
+                <Badge variant="secondary" className="mt-1.5 text-xs font-normal">
+                  Será alocado no bloco da {periodFeedback[inferredPeriod]}
+                </Badge>
+              )}
             </div>
           </div>
           <DialogFooter>
