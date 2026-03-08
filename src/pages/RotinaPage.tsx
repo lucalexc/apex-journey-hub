@@ -173,6 +173,8 @@ export default function RotinaPage() {
         </Button>
       </motion.div>
 
+      <CircadianCard />
+
       {!hasItems ? (
         <EmptyState onAdd={() => setOpen(true)} />
       ) : (
