@@ -1,4 +1,5 @@
-import { CheckSquare, Target, Clock, Map, Fingerprint, BookOpen } from "lucide-react";
+import { CheckSquare, Target, Clock, Map, Fingerprint, BookOpen, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { useSidebar } from "@/components/ui/sidebar";
 
