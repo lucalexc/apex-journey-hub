@@ -296,7 +296,7 @@ export default function RotinaPage() {
             </div>
             <div className="space-y-2">
               <Label>Horário</Label>
-              <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+              <TimeInput24h value={time} onChange={setTime} />
             </div>
           </div>
           <DialogFooter>
