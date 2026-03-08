@@ -122,20 +122,20 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name">Nome Completo</Label>
-                    <Input id="signup-name" type="text" placeholder="Seu nome" required />
+                    <Label htmlFor="signup-name" className="text-[hsl(var(--landing-fg))]">Nome Completo</Label>
+                    <Input id="signup-name" type="text" placeholder="Seu nome" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">E-mail</Label>
-                    <Input id="signup-email" type="email" placeholder="seu@email.com" required />
+                    <Label htmlFor="signup-email" className="text-[hsl(var(--landing-fg))]">E-mail</Label>
+                    <Input id="signup-email" type="email" placeholder="seu@email.com" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Senha</Label>
-                    <Input id="signup-password" type="password" placeholder="••••••••" required />
+                    <Label htmlFor="signup-password" className="text-[hsl(var(--landing-fg))]">Senha</Label>
+                    <Input id="signup-password" type="password" placeholder="••••••••" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-confirm">Confirmar Senha</Label>
-                    <Input id="signup-confirm" type="password" placeholder="••••••••" required />
+                    <Label htmlFor="signup-confirm" className="text-[hsl(var(--landing-fg))]">Confirmar Senha</Label>
+                    <Input id="signup-confirm" type="password" placeholder="••••••••" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
                   </div>
                   <Button type="submit" className="w-full rounded-full font-bold h-11" disabled={loading}>
                     {loading ? "Processando..." : "Criar Conta e Começar"}
