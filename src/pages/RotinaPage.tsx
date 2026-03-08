@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { toast } from "@/hooks/use-toast";
 
 function TimeInput24h({ value, onChange, className }: { value: string; onChange: (v: string) => void; className?: string }) {
@@ -209,15 +209,28 @@ export default function RotinaPage() {
   const [items, setItems] = useState<RoutineItem[]>([]);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [period, setPeriod] = useState<Period>("morning");
   const [time, setTime] = useState("07:00");
+
+  function getPeriodByTime(t: string): Period {
+    const [h] = t.split(":").map(Number);
+    if (h >= 5 && h < 12) return "morning";
+    if (h >= 12 && h < 18) return "afternoon";
+    return "night";
+  }
+
+  const inferredPeriod = getPeriodByTime(time);
+  const periodFeedback = {
+    morning: "☀️ Manhã",
+    afternoon: "☀️ Tarde",
+    night: "🌙 Noite",
+  };
 
   const handleSave = () => {
     if (!name.trim()) return;
+    const period = getPeriodByTime(time);
     const newItem: RoutineItem = { id: crypto.randomUUID(), name: name.trim(), period, time, done: false };
     setItems((prev) => [...prev, newItem].sort((a, b) => a.time.localeCompare(b.time)));
     setName("");
-    setPeriod("morning");
     setTime("07:00");
     setOpen(false);
     toast({ title: "Bloco criado!", description: `"${newItem.name}" adicionado à ${periodConfig[period].label}.` });
@@ -280,23 +293,17 @@ export default function RotinaPage() {
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label>Nome do Hábito</Label>
+              <Label>Nome da Atividade</Label>
               <Input placeholder='Ex: "Tomar Água"' value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label>Período</Label>
-              <Select value={period} onValueChange={(v) => setPeriod(v as Period)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                   <SelectItem value="morning">Manhã (05h–12h)</SelectItem>
-                   <SelectItem value="afternoon">Tarde (12h–18h)</SelectItem>
-                   <SelectItem value="night">Noite (18h–23h)</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
             <div className="space-y-2">
               <Label>Horário</Label>
               <TimeInput24h value={time} onChange={setTime} />
+              {time.length === 5 && (
+                <Badge variant="secondary" className="mt-1.5 text-xs font-normal">
+                  Será alocado no bloco da {periodFeedback[inferredPeriod]}
+                </Badge>
+              )}
             </div>
           </div>
           <DialogFooter>
