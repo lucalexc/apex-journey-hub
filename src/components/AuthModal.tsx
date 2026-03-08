@@ -60,7 +60,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
             {/* Close */}
             <button
               onClick={() => onOpenChange(false)}
-              className="absolute right-4 top-4 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute right-4 top-4 rounded-sm text-[hsl(var(--landing-muted))] hover:text-[hsl(var(--landing-fg))] transition-colors"
             >
               <X className="h-5 w-5" />
               <span className="sr-only">Fechar</span>
