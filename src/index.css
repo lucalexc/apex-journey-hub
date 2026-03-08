@@ -6,43 +6,43 @@
 
 @layer base {
   :root {
-    --background: 222 47% 4%;
+    --background: 222 58% 5%;
     --foreground: 210 40% 98%;
 
-    --card: 222 47% 7%;
+    --card: 217 45% 14% / 0.4;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 47% 7%;
+    --popover: 217 45% 12%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217 33% 14%;
+    --secondary: 217 33% 14% / 0.6;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217 33% 14%;
+    --muted: 217 33% 14% / 0.5;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 217 33% 14%;
+    --accent: 217 33% 17% / 0.5;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 217 33% 15%;
-    --input: 217 33% 10%;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.06;
     --ring: 221 83% 53%;
 
     --radius: 1rem;
 
-    --sidebar-background: 222 47% 6%;
+    --sidebar-background: 215 50% 10% / 0.6;
     --sidebar-foreground: 215 20% 65%;
     --sidebar-primary: 221 83% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 221 83% 53% / 0.15;
+    --sidebar-accent: 217 90% 61% / 0.10;
     --sidebar-accent-foreground: 213 94% 68%;
-    --sidebar-border: 217 33% 15%;
+    --sidebar-border: 0 0% 100% / 0.05;
     --sidebar-ring: 221 83% 53%;
 
     /* Custom MetaTask tokens */
@@ -52,8 +52,8 @@
     --phase-active: 221 83% 53%;
     --phase-done: 142 71% 45%;
     --phase-locked: 215 20% 65%;
-    --glass: 222 47% 8% / 0.6;
-    --glass-border: 217 33% 15% / 0.3;
+    --glass: 217 45% 12% / 0.4;
+    --glass-border: 0 0% 100% / 0.08;
 
     /* Identity / Biohacking tokens */
     --bio-primary: 243 75% 59%;
@@ -65,14 +65,18 @@
     --sleep-card-foreground: 226 60% 45%;
 
     /* Landing page tokens */
-    --landing-bg: 222 47% 4%;
+    --landing-bg: 222 58% 5%;
     --landing-fg: 0 0% 98%;
     --landing-muted: 215 20% 65%;
-    --landing-card: 222 30% 8%;
-    --landing-card-border: 215 20% 14%;
+    --landing-card: 217 45% 12% / 0.4;
+    --landing-card-border: 0 0% 100% / 0.08;
     --landing-glow: 221 83% 53% / 0.20;
     --landing-card-highlight: 221 83% 53%;
     --landing-card-highlight-border: 221 83% 53%;
+
+    /* Glow colors */
+    --glow-blue: 221 83% 53%;
+    --glow-indigo: 239 84% 67%;
   }
 
   .dark {
