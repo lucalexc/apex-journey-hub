@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import { Dialog, DialogContent, DialogOverlay, DialogPortal } from "@/components/ui/dialog";
@@ -29,6 +29,11 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
   const navigate = useNavigate();
   const [tab, setTab] = useState(defaultTab);
   const [loading, setLoading] = useState(false);
+
+  // Sync tab with defaultTab when modal opens
+  useEffect(() => {
+    if (open) setTab(defaultTab);
+  }, [open, defaultTab]);
 
   // Reset tab when modal opens with a new defaultTab
   const handleOpenChange = (val: boolean) => {
