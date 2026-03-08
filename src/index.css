@@ -63,6 +63,14 @@
     --layer-highlight: 221 83% 53%;
     --sleep-card: 226 100% 97%;
     --sleep-card-foreground: 226 60% 45%;
+
+    /* Landing page tokens */
+    --landing-bg: 240 10% 4%;
+    --landing-fg: 0 0% 98%;
+    --landing-muted: 240 5% 65%;
+    --landing-card: 240 6% 10%;
+    --landing-card-border: 240 4% 16%;
+    --landing-glow: 221 83% 53% / 0.15;
   }
 
   .dark {
