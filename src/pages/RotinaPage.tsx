@@ -195,7 +195,7 @@ function CircadianCard() {
           <Label className="text-xs text-muted-foreground">Dormir</Label>
           <div className="relative">
             <Moon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input type="time" value={sleepTime} onChange={(e) => setSleepTime(e.target.value)} className="pl-10 bg-card" />
+            <TimeInput24h value={sleepTime} onChange={setSleepTime} className="pl-10 bg-card" />
           </div>
         </div>
       </div>
