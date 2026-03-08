@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, CalendarIcon } from "lucide-react";
+import { Plus } from "lucide-react";
 import { format, isToday, isBefore, startOfDay, addDays, isAfter } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
