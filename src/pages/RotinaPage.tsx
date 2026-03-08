@@ -209,8 +209,21 @@ export default function RotinaPage() {
   const [items, setItems] = useState<RoutineItem[]>([]);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [period, setPeriod] = useState<Period>("morning");
   const [time, setTime] = useState("07:00");
+
+  function getPeriodByTime(t: string): Period {
+    const [h] = t.split(":").map(Number);
+    if (h >= 5 && h < 12) return "morning";
+    if (h >= 12 && h < 18) return "afternoon";
+    return "night";
+  }
+
+  const inferredPeriod = getPeriodByTime(time);
+  const periodFeedback = {
+    morning: "☀️ Manhã",
+    afternoon: "☀️ Tarde",
+    night: "🌙 Noite",
+  };
 
   const handleSave = () => {
     if (!name.trim()) return;
