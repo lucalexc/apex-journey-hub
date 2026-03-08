@@ -68,7 +68,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
 
             {/* Logo */}
             <div className="text-center mb-6">
-              <span className="text-xl font-extrabold tracking-tight">
+              <span className="text-xl font-extrabold tracking-tight text-[hsl(var(--landing-fg))]">
                 Meta<span className="text-primary">Task</span>
               </span>
             </div>
