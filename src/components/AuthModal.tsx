@@ -74,9 +74,9 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
             </div>
 
             <Tabs value={tab} onValueChange={(v) => setTab(v as "login" | "signup")} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="login">Entrar</TabsTrigger>
-                <TabsTrigger value="signup">Criar Conta</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-6 bg-[hsl(var(--landing-bg))] p-1 rounded-lg">
+                <TabsTrigger value="login" className="data-[state=active]:bg-[hsl(var(--landing-card-border))] data-[state=active]:text-[hsl(var(--landing-fg))] text-[hsl(var(--landing-muted))] rounded-md">Entrar</TabsTrigger>
+                <TabsTrigger value="signup" className="data-[state=active]:bg-[hsl(var(--landing-card-border))] data-[state=active]:text-[hsl(var(--landing-fg))] text-[hsl(var(--landing-muted))] rounded-md">Criar Conta</TabsTrigger>
               </TabsList>
 
               {/* LOGIN */}
