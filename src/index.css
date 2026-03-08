@@ -61,6 +61,8 @@
     --bio-accent: 187 85% 53%;
     --bio-glow: 243 75% 59% / 0.15;
     --layer-highlight: 221 83% 53%;
+    --sleep-card: 226 100% 97%;
+    --sleep-card-foreground: 226 60% 45%;
   }
 
   .dark {
