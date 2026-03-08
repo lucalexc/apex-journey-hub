@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Sunrise, Sun, Moon, Clock, Bed, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,39 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+
+function TimeInput24h({ value, onChange, className }: { value: string; onChange: (v: string) => void; className?: string }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let raw = e.target.value.replace(/[^\d]/g, "");
+    if (raw.length > 4) raw = raw.slice(0, 4);
+    if (raw.length >= 3) {
+      raw = raw.slice(0, 2) + ":" + raw.slice(2);
+    }
+    // Validate
+    if (raw.includes(":")) {
+      const [h, m] = raw.split(":");
+      const hNum = parseInt(h, 10);
+      const mNum = parseInt(m || "0", 10);
+      if (hNum > 23) return;
+      if (m && m.length === 2 && mNum > 59) return;
+    }
+    onChange(raw);
+  };
+
+  return (
+    <Input
+      ref={inputRef}
+      inputMode="numeric"
+      maxLength={5}
+      placeholder="HH:MM"
+      value={value}
+      onChange={handleChange}
+      className={className}
+    />
+  );
+}
 
 type Period = "morning" | "afternoon" | "night";
 
