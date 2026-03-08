@@ -20,9 +20,9 @@ interface RoutineItem {
 }
 
 const periodConfig = {
-  morning: { label: "Manhã", emoji: "🌅", range: "05h – 12h", icon: Sunrise },
-  afternoon: { label: "Tarde", emoji: "☀️", range: "12h – 18h", icon: Sun },
-  night: { label: "Noite", emoji: "🌙", range: "18h – 23h", icon: Moon },
+  morning: { label: "Manhã", range: "05h – 12h", icon: Sunrise },
+  afternoon: { label: "Tarde", range: "12h – 18h", icon: Sun },
+  night: { label: "Noite", range: "18h – 23h", icon: Moon },
 } as const;
 
 function EmptyState({ onAdd }: { onAdd: () => void }) {
