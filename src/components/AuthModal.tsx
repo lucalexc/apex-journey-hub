@@ -56,7 +56,7 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
       <DialogPortal>
         <DialogOverlay className="bg-black/60 backdrop-blur-md fixed inset-0 z-50" />
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-md rounded-2xl bg-card border border-border shadow-2xl p-8 animate-in fade-in-0 zoom-in-95 duration-200">
+          <div className="relative w-full max-w-md rounded-2xl bg-[hsl(var(--landing-card))] border border-[hsl(var(--landing-card-border))] shadow-2xl shadow-black/50 p-8 animate-in fade-in-0 zoom-in-95 duration-200">
             {/* Close */}
             <button
               onClick={() => onOpenChange(false)}
