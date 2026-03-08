@@ -36,7 +36,7 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r-0">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
       <SidebarContent className="pt-6">
         {!collapsed && (
           <div className="px-6 pb-6">
@@ -60,8 +60,8 @@ export function AppSidebar() {
                     <NavLink
                       to={item.url}
                       end
-                      className="flex items-center gap-3 px-3 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors rounded-xl"
-                      activeClassName="bg-primary/10 text-primary font-semibold"
+                      className="flex items-center gap-3 px-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors rounded-xl"
+                      activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
                     >
                       <item.icon className="h-5 w-5 shrink-0" />
                       {!collapsed && <span className="text-sm">{item.title}</span>}
