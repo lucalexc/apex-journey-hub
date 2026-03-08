@@ -29,6 +29,11 @@ import { Button } from "@/components/ui/button";
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/");
+  };
 
   return (
     <Sidebar collapsible="icon" className="border-r-0">
@@ -68,6 +73,17 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter className="p-3">
+        <Button
+          variant="ghost"
+          onClick={handleLogout}
+          className="w-full justify-start gap-3 rounded-xl h-11 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+        >
+          <LogOut className="h-5 w-5 shrink-0" />
+          {!collapsed && <span className="text-sm">Desconectar</span>}
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   );
 }
