@@ -143,12 +143,12 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
                 </form>
 
                 <div className="flex items-center gap-3 my-5">
-                  <Separator className="flex-1" />
-                  <span className="text-xs text-muted-foreground">ou</span>
-                  <Separator className="flex-1" />
+                  <Separator className="flex-1 bg-[hsl(var(--landing-card-border))]" />
+                  <span className="text-xs text-[hsl(var(--landing-muted))]">ou</span>
+                  <Separator className="flex-1 bg-[hsl(var(--landing-card-border))]" />
                 </div>
 
-                <Button variant="outline" className="w-full rounded-full font-medium h-11 gap-2.5" type="button">
+                <Button variant="outline" className="w-full rounded-full font-medium h-11 gap-2.5 bg-[hsl(var(--landing-card))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] hover:bg-[hsl(var(--landing-card-border))] hover:text-[hsl(var(--landing-fg))]" type="button">
                   <GoogleIcon />
                   Continuar com o Google
                 </Button>
