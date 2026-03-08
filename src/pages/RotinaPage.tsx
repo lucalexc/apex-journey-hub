@@ -58,30 +58,43 @@ function RoutineCard({ item, onToggle }: { item: RoutineItem; onToggle: (id: str
   );
 }
 
+function useSleepDuration(wakeTime: string, sleepTime: string) {
+  if (!wakeTime || !sleepTime) return null;
+  const [wH, wM] = wakeTime.split(":").map(Number);
+  const [sH, sM] = sleepTime.split(":").map(Number);
+  let diff = (wH * 60 + wM) - (sH * 60 + sM);
+  if (diff <= 0) diff += 1440;
+  return { hours: Math.floor(diff / 60), minutes: diff % 60, total: diff / 60 };
+}
+
+function SleepFeedback({ hours, minutes, total }: { hours: number; minutes: number; total: number }) {
+  const label = `${hours}h${minutes > 0 ? ` ${minutes}m` : ""}`;
+  if (total < 7) return <p className="text-sm font-medium text-destructive">⚠️ {label} de sono. Abaixo do recomendado (7h a 9h).</p>;
+  if (total > 9) return <p className="text-sm font-medium" style={{ color: "hsl(25 95% 53%)" }}>⚠️ {label} de sono. Acima do recomendado (7h a 9h).</p>;
+  return <p className="text-sm font-medium" style={{ color: "hsl(142 71% 45%)" }}>✅ {label} de sono. Perfeito! Dentro do ideal.</p>;
+}
+
 function CircadianCard() {
   const [wakeTime, setWakeTime] = useState("");
   const [sleepTime, setSleepTime] = useState("");
-  const [editing, setEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const sleep = useSleepDuration(wakeTime, sleepTime);
 
-  const sleepDuration = (() => {
-    if (!wakeTime || !sleepTime) return null;
-    const [wH, wM] = wakeTime.split(":").map(Number);
-    const [sH, sM] = sleepTime.split(":").map(Number);
-    let wakeMin = wH * 60 + wM;
-    let sleepMin = sH * 60 + sM;
-    let diff = wakeMin - sleepMin;
-    if (diff <= 0) diff += 1440;
-    const h = Math.floor(diff / 60);
-    const m = diff % 60;
-    return `${h}h${m > 0 ? ` ${m}m` : ""}`;
-  })();
+  const handleConfirm = () => {
+    if (!wakeTime || !sleepTime) return;
+    setIsEditing(false);
+    setConfirmed(true);
+    toast({ title: "Horários confirmados!", description: `Acordar: ${wakeTime} · Dormir: ${sleepTime}` });
+  };
 
-  if (!editing && !wakeTime && !sleepTime) {
+  // Initial empty state
+  if (!confirmed && !isEditing) {
     return (
       <motion.button
         initial={{ opacity: 0, y: -5 }}
         animate={{ opacity: 1, y: 0 }}
-        onClick={() => setEditing(true)}
+        onClick={() => setIsEditing(true)}
         className="w-full flex items-center gap-3 rounded-2xl border border-dashed border-border p-4 mb-6 text-left hover:bg-accent/50 transition-colors"
       >
         <Bed className="h-5 w-5 text-muted-foreground" />
@@ -90,6 +103,42 @@ function CircadianCard() {
     );
   }
 
+  // Read mode
+  if (confirmed && !isEditing) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -5 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-2xl p-5 mb-6 border border-border"
+        style={{ background: "hsl(var(--sleep-card))" }}
+      >
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Bed className="h-5 w-5" style={{ color: "hsl(var(--sleep-card-foreground))" }} />
+            <h3 className="text-sm font-semibold" style={{ color: "hsl(var(--sleep-card-foreground))" }}>Ciclo Circadiano</h3>
+          </div>
+          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setIsEditing(true)}>
+            <Pencil className="h-4 w-4 text-muted-foreground" />
+          </Button>
+        </div>
+        <div className="flex items-center gap-6 mb-3">
+          <div className="flex items-center gap-2">
+            <Sunrise className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Acordar:</span>
+            <span className="text-sm font-bold text-foreground font-mono">{wakeTime}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Moon className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">Dormir:</span>
+            <span className="text-sm font-bold text-foreground font-mono">{sleepTime}</span>
+          </div>
+        </div>
+        {sleep && <SleepFeedback hours={sleep.hours} minutes={sleep.minutes} total={sleep.total} />}
+      </motion.div>
+    );
+  }
+
+  // Edit mode
   return (
     <motion.div
       initial={{ opacity: 0, y: -5 }}
@@ -100,38 +149,25 @@ function CircadianCard() {
       <div className="flex items-center gap-2 mb-4">
         <Bed className="h-5 w-5" style={{ color: "hsl(var(--sleep-card-foreground))" }} />
         <h3 className="text-sm font-semibold" style={{ color: "hsl(var(--sleep-card-foreground))" }}>Ciclo Circadiano</h3>
-        {sleepDuration && (
-          <Badge variant="secondary" className="ml-auto text-xs font-mono">
-            ⏱️ {sleepDuration} de sono
-          </Badge>
-        )}
       </div>
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 mb-4">
         <div className="flex-1 space-y-1.5">
           <Label className="text-xs text-muted-foreground">Acordar</Label>
           <div className="relative">
             <Sunrise className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="time"
-              value={wakeTime}
-              onChange={(e) => { setWakeTime(e.target.value); setEditing(false); }}
-              className="pl-10 bg-card"
-            />
+            <Input type="time" value={wakeTime} onChange={(e) => setWakeTime(e.target.value)} className="pl-10 bg-card" />
           </div>
         </div>
         <div className="flex-1 space-y-1.5">
           <Label className="text-xs text-muted-foreground">Dormir</Label>
           <div className="relative">
             <Moon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="time"
-              value={sleepTime}
-              onChange={(e) => { setSleepTime(e.target.value); setEditing(false); }}
-              className="pl-10 bg-card"
-            />
+            <Input type="time" value={sleepTime} onChange={(e) => setSleepTime(e.target.value)} className="pl-10 bg-card" />
           </div>
         </div>
       </div>
+      {sleep && <div className="mb-4"><SleepFeedback hours={sleep.hours} minutes={sleep.minutes} total={sleep.total} /></div>}
+      <Button onClick={handleConfirm} disabled={!wakeTime || !sleepTime} className="rounded-xl">Confirmar Horários</Button>
     </motion.div>
   );
 }
