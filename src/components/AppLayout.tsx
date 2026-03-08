@@ -12,7 +12,7 @@ export function AppLayout() {
         </div>
 
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-14 flex items-center border-b border-border px-4 md:px-6 bg-card/50 backdrop-blur-sm sticky top-0 z-40">
+          <header className="h-14 flex items-center border-b border-border px-4 md:px-6 bg-background/80 backdrop-blur-sm sticky top-0 z-40">
             <SidebarTrigger className="hidden md:flex mr-3" />
             <h1 className="text-lg font-bold tracking-tight md:hidden">
               Meta<span className="text-primary">Task</span>
