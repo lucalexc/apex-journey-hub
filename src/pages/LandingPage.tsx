@@ -5,6 +5,7 @@ import PainSection from "@/components/landing/PainSection";
 import FeaturesSection from "@/components/landing/FeaturesSection";
 import SocialProofSection from "@/components/landing/SocialProofSection";
 import PricingSection from "@/components/landing/PricingSection";
+import FaqSection from "@/components/landing/FaqSection";
 import LandingFooter from "@/components/landing/LandingFooter";
 import AuthModal from "@/components/AuthModal";
 
@@ -30,6 +31,7 @@ export default function LandingPage() {
       <FeaturesSection />
       <SocialProofSection />
       <PricingSection onSignup={() => openAuth("signup")} />
+      <FaqSection onSignup={() => openAuth("signup")} />
       <LandingFooter />
       <AuthModal open={authOpen} onOpenChange={setAuthOpen} defaultTab={authTab} />
     </div>
