@@ -117,8 +117,8 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
 
               {/* SIGNUP */}
               <TabsContent value="signup">
-                <h2 className="text-2xl font-bold mb-1">Comece sua jornada</h2>
-                <p className="text-sm text-muted-foreground mb-6">Crie sua conta e desbloqueie sua vida.</p>
+                <h2 className="text-2xl font-bold mb-1 text-[hsl(var(--landing-fg))]">Comece sua jornada</h2>
+                <p className="text-sm text-[hsl(var(--landing-muted))] mb-6">Crie sua conta e desbloqueie sua vida.</p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
