@@ -36,7 +36,7 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r-0">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
       <SidebarContent className="pt-6">
         {!collapsed && (
           <div className="px-6 pb-6">
