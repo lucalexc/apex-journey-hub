@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Sunrise, Sun, Moon, Clock, Bed, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,39 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+
+function TimeInput24h({ value, onChange, className }: { value: string; onChange: (v: string) => void; className?: string }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let raw = e.target.value.replace(/[^\d]/g, "");
+    if (raw.length > 4) raw = raw.slice(0, 4);
+    if (raw.length >= 3) {
+      raw = raw.slice(0, 2) + ":" + raw.slice(2);
+    }
+    // Validate
+    if (raw.includes(":")) {
+      const [h, m] = raw.split(":");
+      const hNum = parseInt(h, 10);
+      const mNum = parseInt(m || "0", 10);
+      if (hNum > 23) return;
+      if (m && m.length === 2 && mNum > 59) return;
+    }
+    onChange(raw);
+  };
+
+  return (
+    <Input
+      ref={inputRef}
+      inputMode="numeric"
+      maxLength={5}
+      placeholder="HH:MM"
+      value={value}
+      onChange={handleChange}
+      className={className}
+    />
+  );
+}
 
 type Period = "morning" | "afternoon" | "night";
 
@@ -155,14 +188,14 @@ function CircadianCard() {
           <Label className="text-xs text-muted-foreground">Acordar</Label>
           <div className="relative">
             <Sunrise className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input type="time" value={wakeTime} onChange={(e) => setWakeTime(e.target.value)} className="pl-10 bg-card" />
+            <TimeInput24h value={wakeTime} onChange={setWakeTime} className="pl-10 bg-card" />
           </div>
         </div>
         <div className="flex-1 space-y-1.5">
           <Label className="text-xs text-muted-foreground">Dormir</Label>
           <div className="relative">
             <Moon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input type="time" value={sleepTime} onChange={(e) => setSleepTime(e.target.value)} className="pl-10 bg-card" />
+            <TimeInput24h value={sleepTime} onChange={setSleepTime} className="pl-10 bg-card" />
           </div>
         </div>
       </div>
@@ -263,7 +296,7 @@ export default function RotinaPage() {
             </div>
             <div className="space-y-2">
               <Label>Horário</Label>
-              <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+              <TimeInput24h value={time} onChange={setTime} />
             </div>
           </div>
           <DialogFooter>
