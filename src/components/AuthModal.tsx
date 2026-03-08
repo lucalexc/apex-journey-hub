@@ -30,6 +30,11 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
   const [tab, setTab] = useState(defaultTab);
   const [loading, setLoading] = useState(false);
 
+  // Sync tab with defaultTab when modal opens
+  React.useEffect(() => {
+    if (open) setTab(defaultTab);
+  }, [open, defaultTab]);
+
   // Reset tab when modal opens with a new defaultTab
   const handleOpenChange = (val: boolean) => {
     if (val) setTab(defaultTab);
