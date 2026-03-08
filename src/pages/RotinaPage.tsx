@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Sunrise, Sun, Moon, Clock } from "lucide-react";
+import { Plus, Sunrise, Sun, Moon, Clock, Bed } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -20,9 +21,9 @@ interface RoutineItem {
 }
 
 const periodConfig = {
-  morning: { label: "Manhã", emoji: "🌅", range: "05h – 12h", icon: Sunrise },
-  afternoon: { label: "Tarde", emoji: "☀️", range: "12h – 18h", icon: Sun },
-  night: { label: "Noite", emoji: "🌙", range: "18h – 23h", icon: Moon },
+  morning: { label: "Manhã", range: "05h – 12h", icon: Sunrise },
+  afternoon: { label: "Tarde", range: "12h – 18h", icon: Sun },
+  night: { label: "Noite", range: "18h – 23h", icon: Moon },
 } as const;
 
 function EmptyState({ onAdd }: { onAdd: () => void }) {
@@ -53,6 +54,84 @@ function RoutineCard({ item, onToggle }: { item: RoutineItem; onToggle: (id: str
       />
       <span className="text-sm font-mono text-muted-foreground w-14 shrink-0">{item.time}</span>
       <span className={`text-sm font-medium text-foreground ${item.done ? "line-through" : ""}`}>{item.name}</span>
+    </motion.div>
+  );
+}
+
+function CircadianCard() {
+  const [wakeTime, setWakeTime] = useState("");
+  const [sleepTime, setSleepTime] = useState("");
+  const [editing, setEditing] = useState(false);
+
+  const sleepDuration = (() => {
+    if (!wakeTime || !sleepTime) return null;
+    const [wH, wM] = wakeTime.split(":").map(Number);
+    const [sH, sM] = sleepTime.split(":").map(Number);
+    let wakeMin = wH * 60 + wM;
+    let sleepMin = sH * 60 + sM;
+    let diff = wakeMin - sleepMin;
+    if (diff <= 0) diff += 1440;
+    const h = Math.floor(diff / 60);
+    const m = diff % 60;
+    return `${h}h${m > 0 ? ` ${m}m` : ""}`;
+  })();
+
+  if (!editing && !wakeTime && !sleepTime) {
+    return (
+      <motion.button
+        initial={{ opacity: 0, y: -5 }}
+        animate={{ opacity: 1, y: 0 }}
+        onClick={() => setEditing(true)}
+        className="w-full flex items-center gap-3 rounded-2xl border border-dashed border-border p-4 mb-6 text-left hover:bg-accent/50 transition-colors"
+      >
+        <Bed className="h-5 w-5 text-muted-foreground" />
+        <span className="text-sm text-muted-foreground">Definir horário de sono</span>
+      </motion.button>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -5 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-2xl p-5 mb-6 border border-border"
+      style={{ background: "hsl(var(--sleep-card))" }}
+    >
+      <div className="flex items-center gap-2 mb-4">
+        <Bed className="h-5 w-5" style={{ color: "hsl(var(--sleep-card-foreground))" }} />
+        <h3 className="text-sm font-semibold" style={{ color: "hsl(var(--sleep-card-foreground))" }}>Ciclo Circadiano</h3>
+        {sleepDuration && (
+          <Badge variant="secondary" className="ml-auto text-xs font-mono">
+            ⏱️ {sleepDuration} de sono
+          </Badge>
+        )}
+      </div>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex-1 space-y-1.5">
+          <Label className="text-xs text-muted-foreground">Acordar</Label>
+          <div className="relative">
+            <Sunrise className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="time"
+              value={wakeTime}
+              onChange={(e) => { setWakeTime(e.target.value); setEditing(false); }}
+              className="pl-10 bg-card"
+            />
+          </div>
+        </div>
+        <div className="flex-1 space-y-1.5">
+          <Label className="text-xs text-muted-foreground">Dormir</Label>
+          <div className="relative">
+            <Moon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="time"
+              value={sleepTime}
+              onChange={(e) => { setSleepTime(e.target.value); setEditing(false); }}
+              className="pl-10 bg-card"
+            />
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -94,6 +173,8 @@ export default function RotinaPage() {
         </Button>
       </motion.div>
 
+      <CircadianCard />
+
       {!hasItems ? (
         <EmptyState onAdd={() => setOpen(true)} />
       ) : (
@@ -106,9 +187,9 @@ export default function RotinaPage() {
               <section key={p}>
                 <div className="flex items-center gap-2 mb-3">
                   <cfg.icon className="h-4 w-4 text-muted-foreground" />
-                  <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                    {cfg.emoji} {cfg.label} <span className="font-normal">({cfg.range})</span>
-                  </h2>
+                   <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                     {cfg.label} <span className="font-normal">({cfg.range})</span>
+                   </h2>
                 </div>
                 <div className="space-y-2">
                   <AnimatePresence>
@@ -138,9 +219,9 @@ export default function RotinaPage() {
               <Select value={period} onValueChange={(v) => setPeriod(v as Period)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="morning">🌅 Manhã (05h–12h)</SelectItem>
-                  <SelectItem value="afternoon">☀️ Tarde (12h–18h)</SelectItem>
-                  <SelectItem value="night">🌙 Noite (18h–23h)</SelectItem>
+                   <SelectItem value="morning">Manhã (05h–12h)</SelectItem>
+                   <SelectItem value="afternoon">Tarde (12h–18h)</SelectItem>
+                   <SelectItem value="night">Noite (18h–23h)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
