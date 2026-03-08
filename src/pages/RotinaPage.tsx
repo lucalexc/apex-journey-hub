@@ -139,9 +139,9 @@ export default function RotinaPage() {
               <Select value={period} onValueChange={(v) => setPeriod(v as Period)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="morning">🌅 Manhã (05h–12h)</SelectItem>
-                  <SelectItem value="afternoon">☀️ Tarde (12h–18h)</SelectItem>
-                  <SelectItem value="night">🌙 Noite (18h–23h)</SelectItem>
+                   <SelectItem value="morning">Manhã (05h–12h)</SelectItem>
+                   <SelectItem value="afternoon">Tarde (12h–18h)</SelectItem>
+                   <SelectItem value="night">Noite (18h–23h)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
