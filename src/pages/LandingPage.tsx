@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +12,7 @@ import {
   Sparkles,
   ArrowRight,
 } from "lucide-react";
+import AuthModal from "@/components/AuthModal";
 
 /* ── animation helpers ── */
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -30,8 +31,31 @@ function FadeUp({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
+/* ── page ── */
+export default function LandingPage() {
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authTab, setAuthTab] = useState<"login" | "signup">("login");
+
+  const openAuth = (tab: "login" | "signup") => {
+    setAuthTab(tab);
+    setAuthOpen(true);
+  };
+
+  return (
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <Navbar onLogin={() => openAuth("login")} onSignup={() => openAuth("signup")} />
+      <Hero onSignup={() => openAuth("signup")} />
+      <PainSection />
+      <FeaturesSection />
+      <PricingSection onSignup={() => openAuth("signup")} />
+      <Footer />
+      <AuthModal open={authOpen} onOpenChange={setAuthOpen} defaultTab={authTab} />
+    </div>
+  );
+}
+
 /* ── navbar ── */
-function Navbar() {
+function Navbar({ onLogin, onSignup }: { onLogin: () => void; onSignup: () => void }) {
   return (
     <nav className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 h-16">
@@ -39,11 +63,11 @@ function Navbar() {
           Meta<span className="text-primary">Task</span>
         </span>
         <div className="flex items-center gap-4">
-          <a href="/missoes" className="text-sm text-muted-foreground hover:text-foreground transition-colors hidden sm:inline">
+          <button onClick={onLogin} className="text-sm text-muted-foreground hover:text-foreground transition-colors hidden sm:inline">
             Fazer Login
-          </a>
-          <Button size="sm" className="rounded-full px-5 font-semibold" asChild>
-            <a href="/missoes">Começar Jornada</a>
+          </button>
+          <Button size="sm" className="rounded-full px-5 font-semibold" onClick={onSignup}>
+            Começar Jornada
           </Button>
         </div>
       </div>
@@ -52,10 +76,9 @@ function Navbar() {
 }
 
 /* ── hero ── */
-function Hero() {
+function Hero({ onSignup }: { onSignup: () => void }) {
   return (
     <section className="relative pt-36 pb-20 md:pt-48 md:pb-32 overflow-hidden">
-      {/* subtle radial glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative max-w-4xl mx-auto px-6 text-center">
@@ -82,16 +105,13 @@ function Hero() {
 
         <FadeUp delay={0.3}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="rounded-full px-8 text-base font-bold h-14 shadow-lg shadow-primary/25" asChild>
-              <a href="/missoes">
-                Desbloquear Minha Vida — R$&nbsp;18/mês <ArrowRight className="ml-1 w-4 h-4" />
-              </a>
+            <Button size="lg" className="rounded-full px-8 text-base font-bold h-14 shadow-lg shadow-primary/25" onClick={onSignup}>
+              Desbloquear Minha Vida — R$&nbsp;18/mês <ArrowRight className="ml-1 w-4 h-4" />
             </Button>
             <span className="text-sm text-muted-foreground">Cancele quando quiser.</span>
           </div>
         </FadeUp>
 
-        {/* floating mockup cards */}
         <FadeUp delay={0.5} className="mt-16 md:mt-24">
           <div className="relative mx-auto max-w-3xl">
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 pointer-events-none" />
@@ -206,7 +226,7 @@ function BentoCard({ icon, title, description, large = false }: { icon: React.Re
 }
 
 /* ── pricing ── */
-function PricingSection() {
+function PricingSection({ onSignup }: { onSignup: () => void }) {
   const benefits = [
     "Acesso às 25 Fases de Missões",
     "Gestor de Rotina e Ciclo de Sono",
@@ -219,7 +239,6 @@ function PricingSection() {
       <div className="max-w-md mx-auto px-6">
         <FadeUp>
           <div className="relative rounded-3xl border border-primary/20 bg-card p-8 sm:p-10 shadow-2xl shadow-primary/5 text-center overflow-hidden">
-            {/* glow ring */}
             <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
 
             <Badge variant="secondary" className="mb-5 text-xs font-semibold">Acesso Integral</Badge>
@@ -238,8 +257,8 @@ function PricingSection() {
               ))}
             </ul>
 
-            <Button size="lg" className="w-full rounded-full font-bold h-13 text-base" asChild>
-              <a href="/missoes">Assinar Agora</a>
+            <Button size="lg" className="w-full rounded-full font-bold h-13 text-base" onClick={onSignup}>
+              Assinar Agora
             </Button>
 
             <p className="text-xs text-muted-foreground mt-4">7 dias de garantia incondicional.</p>
@@ -265,19 +284,5 @@ function Footer() {
         <span>© {new Date().getFullYear()} MetaTask. Todos os direitos reservados.</span>
       </div>
     </footer>
-  );
-}
-
-/* ── page ── */
-export default function LandingPage() {
-  return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <Navbar />
-      <Hero />
-      <PainSection />
-      <FeaturesSection />
-      <PricingSection />
-      <Footer />
-    </div>
   );
 }
