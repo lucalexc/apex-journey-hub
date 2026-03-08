@@ -227,10 +227,10 @@ export default function RotinaPage() {
 
   const handleSave = () => {
     if (!name.trim()) return;
+    const period = getPeriodByTime(time);
     const newItem: RoutineItem = { id: crypto.randomUUID(), name: name.trim(), period, time, done: false };
     setItems((prev) => [...prev, newItem].sort((a, b) => a.time.localeCompare(b.time)));
     setName("");
-    setPeriod("morning");
     setTime("07:00");
     setOpen(false);
     toast({ title: "Bloco criado!", description: `"${newItem.name}" adicionado à ${periodConfig[period].label}.` });
