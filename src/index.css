@@ -65,12 +65,14 @@
     --sleep-card-foreground: 226 60% 45%;
 
     /* Landing page tokens */
-    --landing-bg: 240 10% 4%;
+    --landing-bg: 222 47% 4%;
     --landing-fg: 0 0% 98%;
-    --landing-muted: 240 5% 65%;
-    --landing-card: 240 6% 10%;
-    --landing-card-border: 240 4% 16%;
-    --landing-glow: 221 83% 53% / 0.15;
+    --landing-muted: 215 20% 65%;
+    --landing-card: 222 30% 8%;
+    --landing-card-border: 215 20% 14%;
+    --landing-glow: 221 83% 53% / 0.20;
+    --landing-card-highlight: 221 83% 53%;
+    --landing-card-highlight-border: 221 83% 53%;
   }
 
   .dark {

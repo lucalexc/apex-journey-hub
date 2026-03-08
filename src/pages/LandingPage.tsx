@@ -18,7 +18,12 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[hsl(var(--landing-bg))] text-[hsl(var(--landing-fg))] overflow-x-hidden">
+    <div className="min-h-screen bg-[hsl(var(--landing-bg))] text-[hsl(var(--landing-fg))] overflow-x-hidden relative">
+      {/* Hero glow */}
+      <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-[hsl(var(--landing-glow))] blur-[160px] pointer-events-none" />
+      {/* Pricing glow */}
+      <div className="absolute bottom-[200px] left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full bg-[hsl(var(--landing-glow))] blur-[140px] pointer-events-none" />
+
       <LandingNavbar onLogin={() => openAuth("login")} onSignup={() => openAuth("signup")} />
       <HeroSection onSignup={() => openAuth("signup")} />
       <PainSection />
