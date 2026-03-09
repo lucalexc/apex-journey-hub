@@ -63,17 +63,15 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
 
       {/* Centered overlay via Portal */}
       {open && createPortal(
-        <div 
-          className="fixed inset-0 z-[9999] flex items-center justify-center"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setOpen(false);
-          }}
-        >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/20" />
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+          {/* Backdrop - closes on click */}
+          <div 
+            className="absolute inset-0 bg-black/20"
+            onClick={() => setOpen(false)}
+          />
           
-          {/* DatePicker Card - Centered */}
-          <div className="relative w-72 bg-white border border-slate-200 shadow-2xl rounded-xl max-h-[80vh] overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] animate-in fade-in-0 zoom-in-95 duration-200">
+          {/* DatePicker Card - Centered, above backdrop */}
+          <div className="relative z-10 w-72 bg-white border border-slate-200 shadow-2xl rounded-xl max-h-[80vh] overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] animate-in fade-in-0 zoom-in-95 duration-200">
             {/* Close button */}
             <button
               type="button"
