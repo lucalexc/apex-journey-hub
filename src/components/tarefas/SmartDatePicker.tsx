@@ -82,11 +82,13 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="z-[100] w-auto p-0 max-h-[80vh] overflow-y-auto border-border bg-popover shadow-2xl shadow-black/60"
+        className="z-[100] w-auto p-0 max-h-[min(420px,80vh)] overflow-y-auto border-border bg-popover shadow-2xl shadow-black/60"
         side="bottom"
         align="center"
+        sideOffset={4}
         avoidCollisions={true}
         collisionPadding={16}
+        sticky="always"
       >
         {/* Quick shortcuts */}
         <div className="p-2 space-y-0.5">
