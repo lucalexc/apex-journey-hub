@@ -88,7 +88,6 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
         sideOffset={8}
         avoidCollisions={true}
         collisionPadding={16}
-        sticky="always"
       >
         <div className="flex flex-col max-h-[80vh]">
           {/* Quick shortcuts */}
