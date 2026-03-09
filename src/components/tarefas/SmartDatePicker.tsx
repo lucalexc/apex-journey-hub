@@ -68,21 +68,23 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
         sideOffset={16} 
         align="start" 
         avoidCollisions={true}
-        className="w-72 bg-white border border-slate-200 shadow-xl rounded-xl p-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] z-[9999]"
+        className="pointer-events-auto w-72 bg-white border border-slate-200 shadow-xl rounded-xl p-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] z-[9999]"
       >
         <PopoverPrimitive.Arrow className="fill-white" />
         
-        {/* Close button */}
-        <button
-          type="button"
-          onClick={() => setOpen(false)}
-          className="absolute top-2 right-2 h-6 w-6 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors z-10"
-        >
-          <X className="h-3.5 w-3.5" />
-        </button>
+        {/* Header with Close button */}
+        <div className="flex justify-end pt-2 pr-2">
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="h-6 w-6 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
 
         {/* Section 1: Shortcuts */}
-        <div className="pt-2 pb-0.5">
+        <div className="pb-0.5">
           {shortcuts.map((s) => (
             <button
               key={s.label}
@@ -111,7 +113,7 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
             onSelect={(date) => pick(date)}
             locale={ptBR}
             initialFocus
-            className="p-2 pointer-events-auto !text-xs"
+            className="p-2 !text-xs"
             classNames={{
               months: "flex flex-col space-y-2",
               month: "space-y-2",
@@ -143,7 +145,7 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
         <div className="p-2 flex gap-2">
           <button
             type="button"
-            onClick={(e) => e.preventDefault()}
+            onClick={(e) => { e.preventDefault(); setOpen(false); }}
             className="flex-1 border border-slate-200 text-slate-500 hover:bg-slate-50 text-[12px] py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-colors"
           >
             <Clock className="h-3 w-3" />
@@ -151,7 +153,7 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
           </button>
           <button
             type="button"
-            onClick={(e) => e.preventDefault()}
+            onClick={(e) => { e.preventDefault(); setOpen(false); }}
             className="flex-1 border border-slate-200 text-slate-500 hover:bg-slate-50 text-[12px] py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-colors"
           >
             <Repeat className="h-3 w-3" />
