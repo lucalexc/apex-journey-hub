@@ -1,110 +1,179 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ChevronDown } from "lucide-react";
+import { ArrowRight, RotateCcw, Save, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
-import { layers } from "@/data/quem-sou";
+import { layerQuizQuestions, layerResults, type LayerResult } from "@/data/layers-quiz";
+
+type Phase = "intro" | "quiz" | "result";
 
 export function LayersTab() {
-  const [currentLayer, setCurrentLayer] = useState<number | null>(null);
-  const [expanded, setExpanded] = useState<number | null>(null);
+  const [phase, setPhase] = useState<Phase>("intro");
+  const [step, setStep] = useState(0);
+  const [scores, setScores] = useState<Record<number, number>>({});
+  const [result, setResult] = useState<LayerResult | null>(null);
 
-  const handleSetLayer = (id: number) => {
-    setCurrentLayer(id);
-    toast({ title: `Camada ${id} selecionada ✅`, description: `Você está na camada: ${layers.find((l) => l.id === id)?.title}` });
+  const handleStart = () => {
+    setPhase("quiz");
+    setStep(0);
+    setScores({});
   };
 
-  const toggleExpand = (id: number) => {
-    setExpanded((prev) => (prev === id ? null : id));
+  const handleAnswer = (layer: number) => {
+    const newScores = { ...scores, [layer]: (scores[layer] || 0) + 1 };
+    setScores(newScores);
+
+    if (step + 1 >= layerQuizQuestions.length) {
+      // Calculate winner — on tie, pick lowest layer
+      let maxScore = 0;
+      let winnerLayer = 4;
+      for (const [layerStr, score] of Object.entries(newScores)) {
+        const l = Number(layerStr);
+        if (score > maxScore || (score === maxScore && l < winnerLayer)) {
+          maxScore = score;
+          winnerLayer = l;
+        }
+      }
+      setResult(layerResults[winnerLayer]);
+      setPhase("result");
+      toast({
+        title: `Camada ${winnerLayer} identificada! 🎯`,
+        description: `Você está na camada: ${layerResults[winnerLayer].title}`,
+      });
+    } else {
+      setStep(step + 1);
+    }
   };
 
-  return (
-    <div className="max-w-2xl mx-auto space-y-4">
-      <div className="text-center mb-6">
-        <h3 className="text-lg font-bold text-foreground">As 12 Camadas da Personalidade</h3>
-        <p className="text-sm text-muted-foreground mt-1">Identifique em qual estágio de maturidade você está operando</p>
-      </div>
+  const handleReset = () => {
+    setPhase("intro");
+    setStep(0);
+    setScores({});
+    setResult(null);
+  };
 
-      <div className="relative">
-        {/* Vertical line */}
-        <div className="absolute left-6 top-4 bottom-4 w-px bg-border" />
+  // ── Result Screen ──
+  if (phase === "result" && result) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="max-w-2xl mx-auto space-y-6"
+      >
+        <Card className="border border-border bg-card shadow-lg shadow-slate-200/50 rounded-2xl overflow-hidden">
+          <div className="bg-gradient-to-br from-primary/5 via-transparent to-primary/10 p-8 md:p-10 text-center space-y-5">
+            <div className="inline-flex items-center justify-center h-20 w-20 rounded-3xl bg-primary/10 mx-auto">
+              <Layers className="h-9 w-9 text-primary" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Seu nível atual</p>
+              <h2 className="text-3xl font-bold text-foreground">
+                Camada {result.id}: {result.title}
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+              {result.description}
+            </p>
+          </div>
 
-        {layers.slice().reverse().map((layer, i) => {
-          const isActive = currentLayer === layer.id;
-          const isExpanded = expanded === layer.id;
+          <CardContent className="p-6 md:p-8 space-y-4 border-t border-border">
+            <div className="bg-primary/5 rounded-xl p-5 space-y-2">
+              <h4 className="text-sm font-semibold text-foreground">🚀 Como evoluir para a próxima camada</h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">{result.nextStep}</p>
+            </div>
+          </CardContent>
+        </Card>
 
-          return (
-            <motion.div
-              key={layer.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.04 }}
-              className="relative pl-14 mb-2"
-            >
-              {/* Node */}
-              <div className={`absolute left-3.5 top-4 h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                isActive
-                  ? "bg-primary border-primary shadow-[0_0_12px_hsl(var(--primary)/0.4)]"
-                  : "bg-card border-border"
-              }`}>
-                {isActive && <Check className="h-3 w-3 text-primary-foreground" />}
-              </div>
+        <div className="flex justify-center gap-3">
+          <Button variant="outline" className="rounded-xl gap-2" onClick={handleReset}>
+            <RotateCcw className="h-4 w-4" /> Refazer análise
+          </Button>
+          <Button
+            className="rounded-xl gap-2"
+            onClick={() => toast({ title: "Perfil salvo! ✅", description: "Sua camada foi registrada com sucesso." })}
+          >
+            <Save className="h-4 w-4" /> Salvar meu perfil
+          </Button>
+        </div>
+      </motion.div>
+    );
+  }
 
-              <button
-                onClick={() => toggleExpand(layer.id)}
-                className={`w-full text-left rounded-xl p-4 transition-all border ${
-                  isActive
-                    ? "bg-primary/5 border-primary/30 shadow-card-hover"
-                    : "bg-card border-border/50 shadow-card hover:shadow-card-hover hover:border-primary/20"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${
-                      isActive ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
-                    }`}>
-                      {layer.id}
-                    </span>
-                    <span className={`text-sm font-semibold ${isActive ? "text-primary" : "text-foreground"}`}>
-                      {layer.title}
-                    </span>
-                    {isActive && (
-                      <span className="text-[10px] font-medium bg-xp/10 text-xp px-2 py-0.5 rounded-full">
-                        Nível Atual
-                      </span>
-                    )}
-                  </div>
-                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${isExpanded ? "rotate-180" : ""}`} />
-                </div>
+  // ── Quiz Flow ──
+  if (phase === "quiz") {
+    const q = layerQuizQuestions[step];
+    const progress = ((step + 1) / layerQuizQuestions.length) * 100;
 
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
+    return (
+      <div className="max-w-2xl mx-auto space-y-6">
+        {/* Progress */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <span>Pergunta {step + 1} de {layerQuizQuestions.length}</span>
+            <span>{Math.round(progress)}%</span>
+          </div>
+          <Progress value={progress} className="h-2" />
+        </div>
+
+        {/* Question */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.25 }}
+          >
+            <Card className="border border-border bg-card shadow-lg shadow-slate-200/50 rounded-2xl">
+              <CardContent className="p-6 md:p-8 space-y-6">
+                <h3 className="text-xl md:text-2xl font-bold text-foreground leading-snug">
+                  {q.question}
+                </h3>
+                <div className="space-y-3">
+                  {q.options.map((opt, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleAnswer(opt.layer)}
+                      className="w-full text-left rounded-xl border border-border bg-card p-4 text-sm text-foreground transition-all duration-200 hover:border-primary hover:bg-primary/5 hover:shadow-md active:scale-[0.98]"
                     >
-                      <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{layer.description}</p>
-                      {!isActive && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="mt-3 rounded-lg text-xs gap-1.5 hover:bg-primary/5 hover:text-primary hover:border-primary/30"
-                          onClick={(e) => { e.stopPropagation(); handleSetLayer(layer.id); }}
-                        >
-                          <Check className="h-3 w-3" /> Atualmente estou nesta camada
-                        </Button>
-                      )}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </button>
-            </motion.div>
-          );
-        })}
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </AnimatePresence>
       </div>
-    </div>
+    );
+  }
+
+  // ── Intro / CTA ──
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex justify-center"
+    >
+      <Card className="border border-border bg-card shadow-lg shadow-slate-200/50 rounded-2xl max-w-md w-full">
+        <CardContent className="p-8 text-center space-y-5">
+          <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-primary/10 mx-auto">
+            <Layers className="h-8 w-8 text-primary" />
+          </div>
+          <h3 className="text-xl font-bold text-foreground">
+            Em qual degrau da maturidade você está?
+          </h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Responda a 5 perguntas profundas para descobrir a sua Camada da Personalidade atual e o que você precisa fazer para avançar.
+          </p>
+          <Button onClick={handleStart} className="rounded-xl gap-2 px-6">
+            Iniciar Análise <ArrowRight className="h-4 w-4" />
+          </Button>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
