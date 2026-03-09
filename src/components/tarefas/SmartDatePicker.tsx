@@ -8,12 +8,6 @@ import {
   nextSaturday,
   nextMonday,
 } from "date-fns";
-  addDays,
-  isToday,
-  isTomorrow,
-  nextSaturday,
-  nextMonday,
-} from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { CalendarIcon, Clock, Repeat, Sun, Calendar as CalendarFolder, Sofa, ArrowRight, Ban, X } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
