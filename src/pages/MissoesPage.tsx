@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Check, Lock, ChevronRight, Zap } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { missionPhases, type MissionPhase } from "@/data/missions";
+import { Link } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,17 +13,17 @@ function PhaseCardCompleted({ phase, index }: { phase: MissionPhase; index: numb
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.04 }}
-      className="relative flex items-center gap-4"
+      className="relative flex items-stretch gap-6"
     >
       {/* Timeline connector */}
-      <div className="flex flex-col items-center shrink-0">
-        <div className="w-10 h-10 rounded-full bg-phase-done flex items-center justify-center shadow-card">
+      <div className="relative flex flex-col items-center shrink-0 w-12">
+        <div className="relative z-10 w-10 h-10 mt-2 rounded-full bg-phase-done flex items-center justify-center shadow-card">
           <Check className="h-5 w-5 text-primary-foreground" />
         </div>
-        <div className="w-0.5 h-6 bg-phase-done/30" />
+        <div className="absolute top-12 bottom-[-24px] left-1/2 -translate-x-1/2 w-0.5 bg-phase-done/30" />
       </div>
 
-      <div className="flex-1 bg-card rounded-2xl p-4 shadow-card opacity-70 hover:opacity-100 transition-opacity">
+      <div className="flex-1 bg-card rounded-2xl p-4 shadow-card opacity-70 hover:opacity-100 transition-opacity mt-1">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold text-phase-done uppercase tracking-wide">Fase {phase.id}</p>
@@ -51,13 +52,13 @@ function PhaseCardActive({ phase, index }: { phase: MissionPhase; index: number 
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: index * 0.04, type: "spring", stiffness: 200 }}
-      className="relative flex items-start gap-4"
+      className="relative flex items-stretch gap-6"
     >
-      <div className="flex flex-col items-center shrink-0">
-        <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg ring-4 ring-primary/20">
+      <div className="relative flex flex-col items-center shrink-0 w-12">
+        <div className="relative z-10 w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg ring-4 ring-primary/20">
           <Zap className="h-6 w-6 text-primary-foreground" />
         </div>
-        <div className="w-0.5 h-6 bg-border" />
+        <div className="absolute top-12 bottom-[-24px] left-1/2 -translate-x-1/2 w-0.5 bg-border" />
       </div>
 
       <div className="flex-1 bg-card rounded-3xl p-6 shadow-card-hover border border-primary/20 ring-1 ring-primary/5">
@@ -78,9 +79,11 @@ function PhaseCardActive({ phase, index }: { phase: MissionPhase; index: number 
           <Progress value={xpPercent} className="h-2.5 bg-secondary" />
         </div>
 
-        <Button className="w-full mt-4 h-12 rounded-xl text-sm font-semibold gap-2">
-          Continuar Missão
-          <ChevronRight className="h-4 w-4" />
+        <Button asChild className="w-full mt-4 h-12 rounded-xl text-sm font-semibold gap-2">
+          <Link to={`/missoes/${phase.id}`}>
+            Continuar Missão
+            <ChevronRight className="h-4 w-4" />
+          </Link>
         </Button>
       </div>
     </motion.div>
@@ -93,16 +96,18 @@ function PhaseCardLocked({ phase, index }: { phase: MissionPhase; index: number 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.04 }}
-      className="relative flex items-center gap-4"
+      className="relative flex items-stretch gap-6"
     >
-      <div className="flex flex-col items-center shrink-0">
-        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+      <div className="relative flex flex-col items-center shrink-0 w-12">
+        <div className="relative z-10 w-10 h-10 mt-2 rounded-full bg-muted flex items-center justify-center">
           <Lock className="h-4 w-4 text-muted-foreground" />
         </div>
-        {index < missionPhases.length - 1 && <div className="w-0.5 h-6 bg-border/50" />}
+        {index < missionPhases.length - 1 && (
+          <div className="absolute top-12 bottom-[-24px] left-1/2 -translate-x-1/2 w-0.5 bg-border/50" />
+        )}
       </div>
 
-      <div className="flex-1 glass-locked rounded-2xl p-4 cursor-not-allowed">
+      <div className="flex-1 glass-locked rounded-2xl p-4 cursor-not-allowed mt-1 flex flex-col justify-center">
         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Fase {phase.id}</p>
         <h3 className="text-sm font-semibold text-muted-foreground mt-0.5">{phase.title}</h3>
         <p className="text-xs text-muted-foreground/70 mt-1">Complete a fase anterior para desbloquear</p>
@@ -125,7 +130,7 @@ export default function MissoesPage() {
         </p>
       </motion.div>
 
-      <div className="space-y-1">
+      <div className="space-y-6">
         {missionPhases.map((phase, i) => {
           if (phase.status === "completed") return <PhaseCardCompleted key={phase.id} phase={phase} index={i} />;
           if (phase.status === "active") return <PhaseCardActive key={phase.id} phase={phase} index={i} />;
