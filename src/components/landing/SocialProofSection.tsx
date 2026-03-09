@@ -40,7 +40,7 @@ export default function SocialProofSection() {
           </div>
         </FadeUp>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
             <FadeUp key={t.name} delay={0.1 * (i + 1)}>
               <div className="rounded-2xl border border-slate-200 bg-white p-7 sm:p-8 h-full flex flex-col transition-all hover:border-blue-200 hover:shadow-lg shadow-md shadow-slate-100">

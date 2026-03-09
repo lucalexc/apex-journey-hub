@@ -46,7 +46,7 @@ export default function BookDetailModal({ book, open, onClose, completedMissions
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.97 }}
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
-            className="relative w-full max-w-4xl bg-white border border-border rounded-2xl shadow-lg shadow-slate-200/50 my-4"
+            className="relative w-[95vw] sm:w-full max-w-4xl bg-white border border-border rounded-2xl shadow-lg shadow-slate-200/50 my-4 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
