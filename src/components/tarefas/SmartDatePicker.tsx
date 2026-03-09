@@ -61,8 +61,8 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
         <span className="truncate">{displayLabel()}</span>
       </button>
 
-      {/* Centered overlay modal */}
-      {open && (
+      {/* Centered overlay via Portal */}
+      {open && createPortal(
         <div 
           className="fixed inset-0 z-[9999] flex items-center justify-center"
           onClick={(e) => {
@@ -161,7 +161,8 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
