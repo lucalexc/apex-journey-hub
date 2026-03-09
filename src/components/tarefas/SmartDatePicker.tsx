@@ -66,9 +66,10 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
         className="w-72 p-0 z-[9999] bg-white border border-slate-200 shadow-2xl rounded-xl max-h-[min(460px,65vh)] overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         side="bottom"
         align="center"
-        sideOffset={4}
+        alignOffset={-10}
+        sideOffset={8}
         avoidCollisions={true}
-        collisionPadding={24}
+        collisionPadding={20}
       >
         {/* Section 1: Shortcuts */}
         <div className="py-0.5">
