@@ -170,4 +170,19 @@ export const books: Book[] = [
       { id: "fa-3", text: "Chamar alguém pelo nome em uma interação" },
     ],
   },
+  {
+    id: "gestao-alta-performance",
+    title: "Gestão de Alta Performance",
+    author: "Andrew S. Grove",
+    cover: bookGestaoAlta,
+    category: "Liderança",
+    synopsis: "O guia definitivo para líderes, empreendedores e gestores maximizarem a produtividade das suas equipes. Aprenda como aplicar a 'alavancagem gerencial' e conduzir reuniões que geram resultados reais.",
+    amazonUrl: "https://amazon.com.br",
+    missions: [
+      { id: "gap-1", text: "Identificar a \"Maturidade Relevante para a Tarefa\" de alguém da equipe antes de delegar algo hoje." },
+      { id: "gap-2", text: "Agendar uma reunião \"1-on-1\" (um a um) focada exclusivamente em ouvir as travas do colaborador." },
+      { id: "gap-3", text: "Encontrar o \"gargalo\" principal do seu processo atual e criar um indicador de controle para ele." },
+      { id: "gap-4", text: "Identificar e executar uma atividade de \"Alta Alavancagem Gerencial\" (uma ação simples que impacta muitas pessoas)." },
+    ],
+  },
 ];
