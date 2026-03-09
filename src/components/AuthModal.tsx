@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
-import { Dialog, DialogContent, DialogOverlay, DialogPortal } from "@/components/ui/dialog";
+import { Dialog, DialogOverlay, DialogPortal } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,12 +30,10 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
   const [tab, setTab] = useState(defaultTab);
   const [loading, setLoading] = useState(false);
 
-  // Sync tab with defaultTab when modal opens
   useEffect(() => {
     if (open) setTab(defaultTab);
   }, [open, defaultTab]);
 
-  // Reset tab when modal opens with a new defaultTab
   const handleOpenChange = (val: boolean) => {
     if (val) setTab(defaultTab);
     onOpenChange(val);
@@ -54,13 +52,13 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogPortal>
-        <DialogOverlay className="bg-black/60 backdrop-blur-md fixed inset-0 z-50" />
+        <DialogOverlay className="bg-black/30 backdrop-blur-sm fixed inset-0 z-50" />
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-md rounded-2xl bg-[hsl(var(--landing-card))] border border-[hsl(var(--landing-card-border))] shadow-2xl shadow-black/50 p-8 animate-in fade-in-0 zoom-in-95 duration-200">
+          <div className="relative w-full max-w-md rounded-2xl bg-white border border-slate-200 shadow-2xl shadow-slate-300/40 p-8 animate-in fade-in-0 zoom-in-95 duration-200">
             {/* Close */}
             <button
               onClick={() => onOpenChange(false)}
-              className="absolute right-4 top-4 rounded-sm text-[hsl(var(--landing-muted))] hover:text-[hsl(var(--landing-fg))] transition-colors"
+              className="absolute right-4 top-4 rounded-sm text-slate-400 hover:text-slate-700 transition-colors"
             >
               <X className="h-5 w-5" />
               <span className="sr-only">Fechar</span>
@@ -68,35 +66,35 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
 
             {/* Logo */}
             <div className="text-center mb-6">
-              <span className="text-xl font-extrabold tracking-tight text-[hsl(var(--landing-fg))]">
+              <span className="text-xl font-extrabold tracking-tight text-slate-900">
                 Meta<span className="text-primary">Task</span>
               </span>
             </div>
 
             <Tabs value={tab} onValueChange={(v) => setTab(v as "login" | "signup")} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6 bg-[hsl(var(--landing-bg))] p-1 rounded-lg">
-                <TabsTrigger value="login" className="data-[state=active]:bg-[hsl(var(--landing-card-border))] data-[state=active]:text-[hsl(var(--landing-fg))] text-[hsl(var(--landing-muted))] rounded-md">Entrar</TabsTrigger>
-                <TabsTrigger value="signup" className="data-[state=active]:bg-[hsl(var(--landing-card-border))] data-[state=active]:text-[hsl(var(--landing-fg))] text-[hsl(var(--landing-muted))] rounded-md">Criar Conta</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-6 bg-slate-100 p-1 rounded-lg">
+                <TabsTrigger value="login" className="data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm text-slate-500 rounded-md">Entrar</TabsTrigger>
+                <TabsTrigger value="signup" className="data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm text-slate-500 rounded-md">Criar Conta</TabsTrigger>
               </TabsList>
 
               {/* LOGIN */}
               <TabsContent value="login">
-                <h2 className="text-2xl font-bold mb-1 text-[hsl(var(--landing-fg))]">Bem-vindo de volta</h2>
-                <p className="text-sm text-[hsl(var(--landing-muted))] mb-6">Entre na sua conta para continuar.</p>
+                <h2 className="text-2xl font-bold mb-1 text-slate-900">Bem-vindo de volta</h2>
+                <p className="text-sm text-slate-500 mb-6">Entre na sua conta para continuar.</p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email" className="text-[hsl(var(--landing-fg))]">E-mail</Label>
-                    <Input id="login-email" type="email" placeholder="seu@email.com" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
+                    <Label htmlFor="login-email" className="text-slate-700">E-mail</Label>
+                    <Input id="login-email" type="email" placeholder="seu@email.com" required className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-blue-500/20 focus-visible:border-blue-500" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label htmlFor="login-password" className="text-[hsl(var(--landing-fg))]">Senha</Label>
-                      <button type="button" className="text-xs text-primary hover:underline">
+                      <Label htmlFor="login-password" className="text-slate-700">Senha</Label>
+                      <button type="button" className="text-xs text-blue-600 hover:underline">
                         Esqueci minha senha
                       </button>
                     </div>
-                    <Input id="login-password" type="password" placeholder="••••••••" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
+                    <Input id="login-password" type="password" placeholder="••••••••" required className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-blue-500/20 focus-visible:border-blue-500" />
                   </div>
                   <Button type="submit" className="w-full rounded-full font-bold h-11" disabled={loading}>
                     {loading ? "Processando..." : "Entrar"}
@@ -104,12 +102,12 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
                 </form>
 
                 <div className="flex items-center gap-3 my-5">
-                  <Separator className="flex-1 bg-[hsl(var(--landing-card-border))]" />
-                  <span className="text-xs text-[hsl(var(--landing-muted))]">ou</span>
-                  <Separator className="flex-1 bg-[hsl(var(--landing-card-border))]" />
+                  <Separator className="flex-1 bg-slate-200" />
+                  <span className="text-xs text-slate-400">ou</span>
+                  <Separator className="flex-1 bg-slate-200" />
                 </div>
 
-                <Button variant="outline" className="w-full rounded-full font-medium h-11 gap-2.5 bg-[hsl(var(--landing-card))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] hover:bg-[hsl(var(--landing-card-border))] hover:text-[hsl(var(--landing-fg))]" type="button">
+                <Button variant="outline" className="w-full rounded-full font-medium h-11 gap-2.5" type="button">
                   <GoogleIcon />
                   Continuar com o Google
                 </Button>
@@ -117,25 +115,25 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
 
               {/* SIGNUP */}
               <TabsContent value="signup">
-                <h2 className="text-2xl font-bold mb-1 text-[hsl(var(--landing-fg))]">Comece sua jornada</h2>
-                <p className="text-sm text-[hsl(var(--landing-muted))] mb-6">Crie sua conta e desbloqueie sua vida.</p>
+                <h2 className="text-2xl font-bold mb-1 text-slate-900">Comece sua jornada</h2>
+                <p className="text-sm text-slate-500 mb-6">Crie sua conta e desbloqueie sua vida.</p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name" className="text-[hsl(var(--landing-fg))]">Nome Completo</Label>
-                    <Input id="signup-name" type="text" placeholder="Seu nome" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
+                    <Label htmlFor="signup-name" className="text-slate-700">Nome Completo</Label>
+                    <Input id="signup-name" type="text" placeholder="Seu nome" required className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-blue-500/20 focus-visible:border-blue-500" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-[hsl(var(--landing-fg))]">E-mail</Label>
-                    <Input id="signup-email" type="email" placeholder="seu@email.com" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
+                    <Label htmlFor="signup-email" className="text-slate-700">E-mail</Label>
+                    <Input id="signup-email" type="email" placeholder="seu@email.com" required className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-blue-500/20 focus-visible:border-blue-500" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password" className="text-[hsl(var(--landing-fg))]">Senha</Label>
-                    <Input id="signup-password" type="password" placeholder="••••••••" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
+                    <Label htmlFor="signup-password" className="text-slate-700">Senha</Label>
+                    <Input id="signup-password" type="password" placeholder="••••••••" required className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-blue-500/20 focus-visible:border-blue-500" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-confirm" className="text-[hsl(var(--landing-fg))]">Confirmar Senha</Label>
-                    <Input id="signup-confirm" type="password" placeholder="••••••••" required className="bg-[hsl(var(--landing-bg))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] placeholder:text-[hsl(var(--landing-muted))] focus-visible:ring-primary focus-visible:border-primary" />
+                    <Label htmlFor="signup-confirm" className="text-slate-700">Confirmar Senha</Label>
+                    <Input id="signup-confirm" type="password" placeholder="••••••••" required className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus-visible:ring-blue-500/20 focus-visible:border-blue-500" />
                   </div>
                   <Button type="submit" className="w-full rounded-full font-bold h-11" disabled={loading}>
                     {loading ? "Processando..." : "Criar Conta e Começar"}
@@ -143,12 +141,12 @@ export default function AuthModal({ open, onOpenChange, defaultTab = "login" }: 
                 </form>
 
                 <div className="flex items-center gap-3 my-5">
-                  <Separator className="flex-1 bg-[hsl(var(--landing-card-border))]" />
-                  <span className="text-xs text-[hsl(var(--landing-muted))]">ou</span>
-                  <Separator className="flex-1 bg-[hsl(var(--landing-card-border))]" />
+                  <Separator className="flex-1 bg-slate-200" />
+                  <span className="text-xs text-slate-400">ou</span>
+                  <Separator className="flex-1 bg-slate-200" />
                 </div>
 
-                <Button variant="outline" className="w-full rounded-full font-medium h-11 gap-2.5 bg-[hsl(var(--landing-card))] border-[hsl(var(--landing-card-border))] text-[hsl(var(--landing-fg))] hover:bg-[hsl(var(--landing-card-border))] hover:text-[hsl(var(--landing-fg))]" type="button">
+                <Button variant="outline" className="w-full rounded-full font-medium h-11 gap-2.5" type="button">
                   <GoogleIcon />
                   Continuar com o Google
                 </Button>

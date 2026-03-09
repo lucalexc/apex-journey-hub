@@ -35,7 +35,7 @@ export default function FaqSection({ onSignup }: FaqSectionProps) {
     <section id="faq" className="py-24 md:py-36 relative">
       <div className="relative max-w-3xl mx-auto px-6">
         <FadeUp>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-center text-[hsl(var(--landing-fg))] mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-center text-slate-900 mb-12">
             Ainda com dúvidas?
           </h2>
         </FadeUp>
@@ -46,12 +46,12 @@ export default function FaqSection({ onSignup }: FaqSectionProps) {
               <AccordionItem
                 key={i}
                 value={`faq-${i}`}
-                className="border border-[hsl(var(--landing-card-border))] bg-[hsl(var(--landing-card))] rounded-2xl px-6 data-[state=open]:border-primary/30"
+                className="border border-slate-200 bg-white rounded-2xl px-6 data-[state=open]:border-blue-300 shadow-sm"
               >
-                <AccordionTrigger className="text-left text-[hsl(var(--landing-fg))] font-semibold text-base sm:text-lg hover:no-underline py-5">
+                <AccordionTrigger className="text-left text-slate-900 font-semibold text-base sm:text-lg hover:no-underline py-5">
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-[hsl(var(--landing-muted))] text-sm sm:text-base leading-relaxed pb-5">
+                <AccordionContent className="text-slate-500 text-sm sm:text-base leading-relaxed pb-5">
                   {faq.a}
                 </AccordionContent>
               </AccordionItem>
