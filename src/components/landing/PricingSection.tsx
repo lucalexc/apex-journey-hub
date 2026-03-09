@@ -36,7 +36,7 @@ export default function PricingSection({ onSignup }: PricingSectionProps) {
           </div>
         </FadeUp>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
           {/* Monthly — Anchor (Light Card) */}
           <FadeUp delay={0.1}>
             <div className="h-full rounded-2xl border border-slate-200 bg-white p-8 sm:p-10 flex flex-col shadow-md shadow-slate-100">

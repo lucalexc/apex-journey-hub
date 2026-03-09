@@ -52,7 +52,7 @@ export default function FeaturesSection() {
           </div>
         </FadeUp>
 
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <FadeUp delay={0.1}>
             <BentoCard
               icon={<Mountain className="w-6 h-6" />}
