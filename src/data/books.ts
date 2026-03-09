@@ -8,6 +8,7 @@ import bookArteGuerra from "@/assets/book-arte-guerra.jpg";
 import bookMilagreManha from "@/assets/book-milagre-manha.jpg";
 import bookEssencialismo from "@/assets/book-essencialismo.jpg";
 import bookComoFazerAmigos from "@/assets/book-como-fazer-amigos.jpg";
+import bookGestaoAlta from "@/assets/book-gestao-alta-performance.jpg";
 
 export interface BookMission {
   id: string;
