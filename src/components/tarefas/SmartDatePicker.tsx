@@ -82,63 +82,67 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="z-[100] w-[320px] p-0 max-h-[min(460px,80vh)] overflow-y-auto border-border bg-popover shadow-2xl shadow-black/60"
+        className="z-[100] w-[min(360px,95vw)] p-0 border-border bg-popover shadow-2xl max-h-[80vh] overflow-hidden"
         side="bottom"
         align="center"
-        sideOffset={4}
+        sideOffset={8}
         avoidCollisions={true}
         collisionPadding={16}
         sticky="always"
       >
-        {/* Quick shortcuts */}
-        <div className="p-2 space-y-0.5">
-          {shortcuts.map((s) => (
-            <button
-              key={s.label}
-              onClick={() => selectShortcut(s.date)}
-              className="flex items-center w-full gap-3 px-3 py-2 rounded-lg text-sm text-foreground hover:bg-accent transition-colors"
+        <div className="flex flex-col max-h-[80vh]">
+          {/* Quick shortcuts */}
+          <div className="shrink-0 p-2 space-y-0.5">
+            {shortcuts.map((s) => (
+              <button
+                key={s.label}
+                onClick={() => selectShortcut(s.date)}
+                className="flex items-center w-full gap-3 px-3 py-2 rounded-lg text-sm text-foreground hover:bg-accent transition-colors"
+              >
+                <s.icon className={cn("h-4 w-4", s.color)} />
+                <span className="flex-1 text-left">{s.label}</span>
+                {s.hint && (
+                  <span className="text-xs text-muted-foreground capitalize">{s.hint}</span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          <div className="border-t border-border" />
+
+          {/* Calendar (scrolls if needed) */}
+          <div className="flex-1 min-h-0 overflow-y-auto">
+            <Calendar
+              mode="single"
+              selected={value}
+              onSelect={selectFromCalendar}
+              initialFocus
+              className="p-3 pointer-events-auto"
+              locale={ptBR}
+            />
+          </div>
+
+          <div className="border-t border-border" />
+
+          {/* Time & Repeat (always visible) */}
+          <div className="shrink-0 p-2 flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 gap-2 border-border text-muted-foreground hover:text-foreground"
+              onClick={(e) => e.preventDefault()}
             >
-              <s.icon className={cn("h-4 w-4", s.color)} />
-              <span className="flex-1 text-left">{s.label}</span>
-              {s.hint && (
-                <span className="text-xs text-muted-foreground capitalize">{s.hint}</span>
-              )}
-            </button>
-          ))}
-        </div>
-
-        <div className="border-t border-border" />
-
-        {/* Calendar */}
-        <Calendar
-          mode="single"
-          selected={value}
-          onSelect={selectFromCalendar}
-          initialFocus
-          className="p-3 pointer-events-auto"
-          locale={ptBR}
-        />
-
-        <div className="border-t border-border" />
-
-        {/* Time & Repeat */}
-        <div className="p-2 flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 gap-2 border-border text-muted-foreground hover:text-foreground"
-            onClick={(e) => e.preventDefault()}
-          >
-            <Clock className="h-3.5 w-3.5" /> Hora
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 gap-2 border-border text-muted-foreground hover:text-foreground"
-            onClick={(e) => e.preventDefault()}
-          >
-            <Repeat className="h-3.5 w-3.5" /> Repetir
-          </Button>
+              <Clock className="h-3.5 w-3.5" /> Hora
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 gap-2 border-border text-muted-foreground hover:text-foreground"
+              onClick={(e) => e.preventDefault()}
+            >
+              <Repeat className="h-3.5 w-3.5" /> Repetir
+            </Button>
+          </div>
         </div>
       </PopoverContent>
     </Popover>
