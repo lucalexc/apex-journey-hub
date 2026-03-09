@@ -6,7 +6,6 @@ import {
   isTomorrow,
   nextSaturday,
   nextMonday,
-  isSameDay,
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { CalendarIcon, Clock, Repeat, Sun, Calendar as CalendarFolder, Sofa, ArrowRight, Ban } from "lucide-react";
@@ -24,47 +23,16 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
 
   const today = new Date();
   const tomorrow = addDays(today, 1);
-  // "Mais tarde esta semana" = 2 days from now (mid-week)
   const laterThisWeek = addDays(today, 2);
   const weekend = nextSaturday(today);
   const nextWeekMonday = nextMonday(addDays(today, 6));
 
   const shortcuts = [
-    {
-      icon: Sun,
-      label: "Amanhã",
-      hint: format(tomorrow, "EEE", { locale: ptBR }),
-      date: tomorrow,
-      iconColor: "text-amber-500",
-    },
-    {
-      icon: CalendarFolder,
-      label: "Mais tarde esta semana",
-      hint: format(laterThisWeek, "EEE", { locale: ptBR }),
-      date: laterThisWeek,
-      iconColor: "text-blue-500",
-    },
-    {
-      icon: Sofa,
-      label: "Próximo fim de semana",
-      hint: format(weekend, "EEE", { locale: ptBR }),
-      date: weekend,
-      iconColor: "text-purple-500",
-    },
-    {
-      icon: ArrowRight,
-      label: "Próxima semana",
-      hint: format(nextWeekMonday, "EEE", { locale: ptBR }),
-      date: nextWeekMonday,
-      iconColor: "text-emerald-500",
-    },
-    {
-      icon: Ban,
-      label: "Sem vencimento",
-      hint: "",
-      date: undefined as Date | undefined,
-      iconColor: "text-slate-400",
-    },
+    { icon: Sun, label: "Amanhã", hint: format(tomorrow, "EEE", { locale: ptBR }), date: tomorrow, iconColor: "text-amber-500" },
+    { icon: CalendarFolder, label: "Mais tarde esta semana", hint: format(laterThisWeek, "EEE", { locale: ptBR }), date: laterThisWeek, iconColor: "text-blue-500" },
+    { icon: Sofa, label: "Próximo fim de semana", hint: format(weekend, "EEE", { locale: ptBR }), date: weekend, iconColor: "text-purple-500" },
+    { icon: ArrowRight, label: "Próxima semana", hint: format(nextWeekMonday, "EEE", { locale: ptBR }), date: nextWeekMonday, iconColor: "text-emerald-500" },
+    { icon: Ban, label: "Sem vencimento", hint: "", date: undefined as Date | undefined, iconColor: "text-slate-400" },
   ];
 
   const pick = (date: Date | undefined) => {
@@ -95,28 +63,28 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
       </PopoverTrigger>
 
       <PopoverContent
-        className="w-80 p-0 z-[9999] bg-white border border-slate-200 shadow-2xl rounded-xl max-h-[70vh] overflow-y-auto overflow-x-hidden"
+        className="w-72 p-0 z-[9999] bg-white border border-slate-200 shadow-2xl rounded-xl max-h-[min(460px,65vh)] overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         side="bottom"
         align="center"
-        sideOffset={8}
+        sideOffset={4}
         avoidCollisions={true}
         collisionPadding={24}
       >
-        {/* Section 1: Quick Shortcuts */}
-        <div className="py-1">
+        {/* Section 1: Shortcuts */}
+        <div className="py-0.5">
           {shortcuts.map((s) => (
             <button
               key={s.label}
               type="button"
               onClick={() => pick(s.date)}
-              className="w-full flex justify-between items-center px-3 py-2.5 hover:bg-slate-50 transition-colors text-sm text-slate-700"
+              className="w-full flex justify-between items-center px-3 py-1.5 hover:bg-slate-50 transition-colors text-[13px] text-slate-700"
             >
-              <span className="flex items-center gap-2.5">
-                <s.icon className={cn("h-4 w-4", s.iconColor)} />
+              <span className="flex items-center gap-2">
+                <s.icon className={cn("h-3.5 w-3.5", s.iconColor)} />
                 <span>{s.label}</span>
               </span>
               {s.hint && (
-                <span className="text-xs text-slate-400 capitalize">{s.hint}</span>
+                <span className="text-[11px] text-slate-400 capitalize">{s.hint}</span>
               )}
             </button>
           ))}
@@ -124,7 +92,7 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
 
         <div className="border-b border-slate-100" />
 
-        {/* Section 2: Calendar */}
+        {/* Section 2: Compact Calendar */}
         <div className="flex justify-center">
           <Calendar
             mode="single"
@@ -132,32 +100,50 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
             onSelect={(date) => pick(date)}
             locale={ptBR}
             initialFocus
-            className="p-3 pointer-events-auto"
-            modifiersClassNames={{
-              selected: "!bg-blue-600 !text-white hover:!bg-blue-700",
-              today: "bg-blue-50 text-blue-600 font-semibold",
+            className="p-2 pointer-events-auto !text-xs"
+            classNames={{
+              months: "flex flex-col space-y-2",
+              month: "space-y-2",
+              caption: "flex justify-center pt-0.5 relative items-center",
+              caption_label: "text-xs font-medium",
+              nav: "space-x-1 flex items-center",
+              nav_button: "h-6 w-6 bg-transparent p-0 opacity-50 hover:opacity-100 inline-flex items-center justify-center rounded-md border border-slate-200 text-slate-600",
+              nav_button_previous: "absolute left-0",
+              nav_button_next: "absolute right-0",
+              table: "w-full border-collapse",
+              head_row: "flex",
+              head_cell: "text-slate-500 rounded-md w-8 font-normal text-[11px]",
+              row: "flex w-full mt-1",
+              cell: "h-8 w-8 text-center text-[12px] p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected])]:bg-blue-50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+              day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 rounded-md hover:bg-slate-100 transition-colors inline-flex items-center justify-center",
+              day_range_end: "day-range-end",
+              day_selected: "!bg-blue-600 !text-white hover:!bg-blue-700 focus:!bg-blue-600 focus:!text-white",
+              day_today: "bg-blue-50 text-blue-600 font-semibold",
+              day_outside: "text-slate-300 opacity-50",
+              day_disabled: "text-slate-300 opacity-50",
+              day_hidden: "invisible",
             }}
           />
         </div>
 
         <div className="border-b border-slate-100" />
 
-        {/* Section 3: Footer Actions */}
-        <div className="p-3 flex flex-col gap-2">
+        {/* Section 3: Footer */}
+        <div className="p-2 flex gap-2">
           <button
             type="button"
             onClick={(e) => e.preventDefault()}
-            className="w-full border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
+            className="flex-1 border border-slate-200 text-slate-500 hover:bg-slate-50 text-[12px] py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-colors"
           >
-            <Clock className="h-3.5 w-3.5" />
+            <Clock className="h-3 w-3" />
             Hora
           </button>
           <button
             type="button"
             onClick={(e) => e.preventDefault()}
-            className="w-full border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm py-2 rounded-lg flex items-center justify-center gap-2 transition-colors"
+            className="flex-1 border border-slate-200 text-slate-500 hover:bg-slate-50 text-[12px] py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-colors"
           >
-            <Repeat className="h-3.5 w-3.5" />
+            <Repeat className="h-3 w-3" />
             Repetir
           </button>
         </div>
