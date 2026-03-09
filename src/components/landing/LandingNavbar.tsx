@@ -27,12 +27,12 @@ export default function LandingNavbar({ onLogin, onSignup }: LandingNavbarProps)
     <nav
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[hsl(var(--landing-bg))]/80 backdrop-blur-xl border-b border-[hsl(var(--landing-card-border))]"
+          ? "bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-sm"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 h-16">
-        <span className="text-xl font-extrabold tracking-tight text-[hsl(var(--landing-fg))]">
+        <span className="text-xl font-extrabold tracking-tight text-slate-900">
           Meta<span className="text-primary">Task</span>
         </span>
 
@@ -41,7 +41,7 @@ export default function LandingNavbar({ onLogin, onSignup }: LandingNavbarProps)
             <a
               key={link.label}
               href={link.href}
-              className="text-sm text-[hsl(var(--landing-muted))] hover:text-[hsl(var(--landing-fg))] transition-colors"
+              className="text-sm text-slate-500 hover:text-slate-900 transition-colors"
             >
               {link.label}
             </a>
@@ -51,7 +51,7 @@ export default function LandingNavbar({ onLogin, onSignup }: LandingNavbarProps)
         <div className="flex items-center gap-4">
           <button
             onClick={onLogin}
-            className="text-sm text-[hsl(var(--landing-muted))] hover:text-[hsl(var(--landing-fg))] transition-colors hidden sm:inline"
+            className="text-sm text-slate-500 hover:text-slate-900 transition-colors hidden sm:inline"
           >
             Fazer Login
           </button>

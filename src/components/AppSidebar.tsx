@@ -36,14 +36,14 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-[hsl(0_0%_100%/0.05)] bg-[hsl(var(--sidebar-background))] backdrop-blur-xl">
+    <Sidebar collapsible="icon" className="border-r border-slate-200 bg-white">
       <SidebarContent className="pt-6">
         {!collapsed && (
           <div className="px-6 pb-6">
-            <h1 className="text-xl font-bold tracking-tight text-foreground">
+            <h1 className="text-xl font-bold tracking-tight text-slate-900">
               Meta<span className="text-primary">Task</span>
             </h1>
-            <p className="text-xs text-muted-foreground mt-0.5">O RPG da Vida Real</p>
+            <p className="text-xs text-slate-400 mt-0.5">O RPG da Vida Real</p>
           </div>
         )}
         {collapsed && (
@@ -60,8 +60,8 @@ export function AppSidebar() {
                     <NavLink
                       to={item.url}
                       end
-                      className="flex items-center gap-3 px-3 text-muted-foreground hover:bg-[hsl(0_0%_100%/0.05)] hover:text-foreground transition-colors rounded-xl"
-                      activeClassName="bg-[hsl(var(--primary)/0.10)] text-[hsl(213_94%_68%)] border border-[hsl(var(--primary)/0.20)] font-semibold"
+                      className="flex items-center gap-3 px-3 text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors rounded-xl"
+                      activeClassName="bg-blue-50 text-blue-700 font-semibold"
                     >
                       <item.icon className="h-5 w-5 shrink-0" />
                       {!collapsed && <span className="text-sm">{item.title}</span>}
@@ -74,11 +74,11 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-3">
+      <SidebarFooter className="p-3 border-t border-slate-100">
         <Button
           variant="ghost"
           onClick={handleLogout}
-          className="w-full justify-start gap-3 rounded-xl h-11 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+          className="w-full justify-start gap-3 rounded-xl h-11 text-slate-500 hover:text-red-600 hover:bg-red-50"
         >
           <LogOut className="h-5 w-5 shrink-0" />
           {!collapsed && <span className="text-sm">Desconectar</span>}
