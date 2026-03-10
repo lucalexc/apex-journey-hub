@@ -58,7 +58,7 @@ function TaskCard({ task, onToggle, onClick, onTimeUpdate }: TaskCardProps) {
   const [elapsed, setElapsed] = useState(task.timeSpent || 0);
 
   // Focus Timer Logic
-  useState(() => {
+  useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isTimerActive && !task.done) {
       interval = setInterval(() => {
