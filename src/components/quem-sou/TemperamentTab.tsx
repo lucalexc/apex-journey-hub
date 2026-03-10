@@ -109,14 +109,22 @@ export function TemperamentTab() {
 
   // Quiz flow
   if (step >= 0) {
-    const q = temperamentQuestions[step];
-    const progress = ((step + 1) / temperamentQuestions.length) * 100;
+    const q = questions[step];
+    const progress = ((step + 1) / questions.length) * 100;
+    
+    // Mapeamento dos tipos do array novo para os tipos do temperamentResults
+    const typeMap: Record<string, string> = {
+      "colerico": "Colérico",
+      "sanguineo": "Sanguíneo",
+      "melancolico": "Melancólico",
+      "fleumatico": "Fleumático"
+    };
 
     return (
       <div className="max-w-xl mx-auto space-y-6">
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>Pergunta {step + 1} de {temperamentQuestions.length}</span>
+            <span>Pergunta {step + 1} de {questions.length}</span>
             <span>{Math.round(progress)}%</span>
           </div>
           <Progress value={progress} className="h-2" />
@@ -132,16 +140,16 @@ export function TemperamentTab() {
           >
             <Card className="border-border/50 shadow-card">
               <CardContent className="p-6 space-y-5">
-                <h3 className="text-lg font-semibold text-foreground">{q.question}</h3>
+                <h3 className="text-lg font-semibold text-foreground">{q.pergunta}</h3>
                 <div className="space-y-3">
-                  {q.options.map((opt) => (
+                  {q.opcoes.map((opt) => (
                     <Button
-                      key={opt.label}
+                      key={opt.texto}
                       variant="outline"
-                      className="w-full justify-start text-left h-auto py-4 px-5 rounded-xl text-sm font-normal hover:bg-primary/5 hover:border-primary/30 transition-all"
-                      onClick={() => handleAnswer(opt.type)}
+                      className="w-full justify-start text-left h-auto py-4 px-5 rounded-xl text-sm font-normal hover:bg-primary/5 hover:border-primary/30 transition-all text-wrap"
+                      onClick={() => handleAnswer(typeMap[opt.tipo] || opt.tipo)}
                     >
-                      {opt.label}
+                      {opt.texto}
                     </Button>
                   ))}
                 </div>

@@ -13,52 +13,115 @@ export interface TemperamentResult {
   description: string;
 }
 
-export const temperamentQuestions = [
+export const questions = [
   {
-    question: "Em um grupo, qual é o seu papel natural?",
-    options: [
-      { label: "Líder — tomo a frente e organizo tudo", type: "Colérico" as const },
-      { label: "Animador — faço todos rirem e se sentirem bem", type: "Sanguíneo" as const },
-      { label: "Observador — analiso antes de agir", type: "Melancólico" as const },
-      { label: "Mediador — busco harmonia e evito conflitos", type: "Fleumático" as const },
-    ],
+    pergunta: "1. Um projeto importante acaba de atrasar por culpa de terceiros. Qual a sua primeira reação interna?",
+    opcoes: [
+      { texto: "Assumo o controle imediatamente, cobro os responsáveis e mudo o plano para entregar logo.", tipo: "colerico" },
+      { texto: "Tento aliviar a tensão do grupo, foco no lado positivo e improviso uma solução.", tipo: "sanguineo" },
+      { texto: "Fico frustrado com a falta de excelência, analiso onde o erro ocorreu e refaço o cronograma.", tipo: "melancolico" },
+      { texto: "Mantenho a calma, evito conflitos e sigo trabalhando no meu ritmo para resolver a parte que me cabe.", tipo: "fleumatico" }
+    ]
   },
   {
-    question: "Como você lida com prazos apertados?",
-    options: [
-      { label: "Encaro de frente e entrego antes do prazo", type: "Colérico" as const },
-      { label: "Trabalho melhor sob pressão, improviso", type: "Sanguíneo" as const },
-      { label: "Planejo cada detalhe para não errar", type: "Melancólico" as const },
-      { label: "Sigo no meu ritmo, sem me estressar", type: "Fleumático" as const },
-    ],
+    pergunta: "2. Em um ambiente social ou evento de networking com pessoas desconhecidas, você geralmente:",
+    opcoes: [
+      { texto: "Vou direto aos contatos que podem me trazer resultados práticos ou de negócios.", tipo: "colerico" },
+      { texto: "Me misturo rapidamente, conto histórias, dou risada e viro o centro das atenções.", tipo: "sanguineo" },
+      { texto: "Prefiro conversas profundas com uma ou duas pessoas e observo mais do que falo.", tipo: "melancolico" },
+      { texto: "Sou amigável e ouvinte, mas prefiro que os outros iniciem as conversas.", tipo: "fleumatico" }
+    ]
   },
   {
-    question: "O que mais te irrita no dia a dia?",
-    options: [
-      { label: "Incompetência e lentidão", type: "Colérico" as const },
-      { label: "Rotina monótona e solidão", type: "Sanguíneo" as const },
-      { label: "Desorganização e superficialidade", type: "Melancólico" as const },
-      { label: "Conflitos e agressividade", type: "Fleumático" as const },
-    ],
+    pergunta: "3. Como é a sua relação com regras e processos rígidos?",
+    opcoes: [
+      { texto: "Sigo se fizerem sentido para o meu objetivo final; se me atrasarem, eu as quebro.", tipo: "colerico" },
+      { texto: "Acho entediante e frequentemente esqueço ou ignoro detalhes burocráticos.", tipo: "sanguineo" },
+      { texto: "Gosto e respeito. Regras garantem qualidade, ordem e evitam o caos.", tipo: "melancolico" },
+      { texto: "Sigo tranquilamente. É mais fácil seguir o processo do que criar atrito questionando.", tipo: "fleumatico" }
+    ]
   },
   {
-    question: "Qual frase te define melhor?",
-    options: [
-      { label: "Resultados falam mais que palavras", type: "Colérico" as const },
-      { label: "A vida é curta demais para ser séria", type: "Sanguíneo" as const },
-      { label: "A perfeição está nos detalhes", type: "Melancólico" as const },
-      { label: "A paz interior vale mais que qualquer vitória", type: "Fleumático" as const },
-    ],
+    pergunta: "4. Ao tomar uma decisão financeira ou de carreira difícil, você se baseia em:",
+    opcoes: [
+      { texto: "Intuição rápida, foco no resultado e coragem para assumir o risco.", tipo: "colerico" },
+      { texto: "No que me empolga no momento e no impacto que isso terá na minha imagem.", tipo: "sanguineo" },
+      { texto: "Muitos dados, prós e contras, análise de cenários e medo de errar.", tipo: "melancolico" },
+      { texto: "No que trará mais segurança, paz de espírito e estabilidade a longo prazo.", tipo: "fleumatico" }
+    ]
   },
   {
-    question: "O que te motiva a levantar da cama?",
-    options: [
-      { label: "Conquistar meus objetivos", type: "Colérico" as const },
-      { label: "Viver novas experiências", type: "Sanguíneo" as const },
-      { label: "Criar algo significativo", type: "Melancólico" as const },
-      { label: "Manter a estabilidade da minha vida", type: "Fleumático" as const },
-    ],
+    pergunta: "5. O que mais rapidamente drena a sua energia no dia a dia?",
+    opcoes: [
+      { texto: "Pessoas lentas, indecisas ou ineficientes.", tipo: "colerico" },
+      { texto: "Rotinas repetitivas, isolamento e falta de novidades.", tipo: "sanguineo" },
+      { texto: "Trabalho mal feito, desordem e pessoas superficiais.", tipo: "melancolico" },
+      { texto: "Conflitos, pressão extrema e pessoas agressivas exigindo muito de mim.", tipo: "fleumatico" }
+    ]
   },
+  {
+    pergunta: "6. Durante uma discussão ou conflito acalorado, sua postura é:",
+    opcoes: [
+      { texto: "Argumento com força para vencer. Tenho certeza da minha visão.", tipo: "colerico" },
+      { texto: "Falo alto, me emociono, mas logo depois perdoo e esqueço.", tipo: "sanguineo" },
+      { texto: "Trago fatos, me ofendo profundamente se for injustiçado e demoro a esquecer.", tipo: "melancolico" },
+      { texto: "Cedo ou me calo para manter a paz. Odeio gritaria e atrito.", tipo: "fleumatico" }
+    ]
+  },
+  {
+    pergunta: "7. Como é a organização física do seu espaço de trabalho ou quarto?",
+    opcoes: [
+      { texto: "Funcional. Não precisa ser perfeito, só precisa ter o que eu preciso para agir.", tipo: "colerico" },
+      { texto: "Geralmente caótico ou bagunçado, cheio de estímulos visuais.", tipo: "sanguineo" },
+      { texto: "Impecável e sistemático. Cada coisa tem seu lugar exato.", tipo: "melancolico" },
+      { texto: "Confortável e agradável, não sou obcecado por ordem, mas não vivo no caos.", tipo: "fleumatico" }
+    ]
+  },
+  {
+    pergunta: "8. Quando você precisa executar uma tarefa chata, mas necessária:",
+    opcoes: [
+      { texto: "Faço o mais rápido possível só para tirar da frente e ir para o que importa.", tipo: "colerico" },
+      { texto: "Procrastino ao máximo e me distraio com coisas mais divertidas.", tipo: "sanguineo" },
+      { texto: "Faço com perfeccionismo. Se é para fazer, que seja bem feito, mesmo sendo chato.", tipo: "melancolico" },
+      { texto: "Faço devagar, no meu tempo, sem pressa ou estresse.", tipo: "fleumatico" }
+    ]
+  },
+  {
+    pergunta: "9. Qual destas qualidades você considera o seu maior ponto forte?",
+    opcoes: [
+      { texto: "Determinação, liderança e foco em resultados.", tipo: "colerico" },
+      { texto: "Carisma, otimismo e facilidade de comunicação.", tipo: "sanguineo" },
+      { texto: "Profundidade, lealdade e alto padrão de qualidade.", tipo: "melancolico" },
+      { texto: "Empatia, diplomacia e consistência.", tipo: "fleumatico" }
+    ]
+  },
+  {
+    pergunta: "10. Quando você sofre uma falha pessoal em uma meta, como você processa isso?",
+    opcoes: [
+      { texto: "Fico com raiva de mim mesmo, dobro a aposta e forço a barra para conseguir na próxima.", tipo: "colerico" },
+      { texto: "Fico triste na hora, mas racionalizo que 'faz parte' e logo arrumo uma meta nova.", tipo: "sanguineo" },
+      { texto: "Sinto uma culpa esmagadora, rumino o erro por dias e duvido da minha capacidade.", tipo: "melancolico" },
+      { texto: "Me conformo rápido. Penso que não era para ser e volto à minha rotina normal.", tipo: "fleumatico" }
+    ]
+  },
+  {
+    pergunta: "11. Em um trabalho em equipe, você prefere o papel de:",
+    opcoes: [
+      { texto: "Líder que define a direção e cobra a execução.", tipo: "colerico" },
+      { texto: "Motivador que traz ideias criativas e mantém a energia alta.", tipo: "sanguineo" },
+      { texto: "Especialista que garante a qualidade técnica e os detalhes sem aparecer muito.", tipo: "melancolico" },
+      { texto: "Apoiador que concilia opiniões e faz o trabalho de base com estabilidade.", tipo: "fleumatico" }
+    ]
+  },
+  {
+    pergunta: "12. O seu final de semana perfeito é focado em:",
+    opcoes: [
+      { texto: "Adiantar projetos pessoais, competir em algum esporte ou realizar conquistas.", tipo: "colerico" },
+      { texto: "Sair com amigos, ir a festas, viajar sem roteiro e viver aventuras intensas.", tipo: "sanguineo" },
+      { texto: "Ficar em casa, ler um bom livro, estudar um assunto profundo ou ter conversas íntimas.", tipo: "melancolico" },
+      { texto: "Descansar no sofá, assistir séries, comer bem e não ter horários ou obrigações.", tipo: "fleumatico" }
+    ]
+  }
 ];
 
 export const temperamentResults: Record<string, TemperamentResult> = {
