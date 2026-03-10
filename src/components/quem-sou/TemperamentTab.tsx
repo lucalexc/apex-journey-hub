@@ -124,7 +124,7 @@ export function TemperamentTab() {
       <div className="max-w-xl mx-auto space-y-6">
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>Pergunta {step + 1} de {questions.length}</span>
+            <span>Pergunta {step + 1} de {temperamentQuestions.length}</span>
             <span>{Math.round(progress)}%</span>
           </div>
           <Progress value={progress} className="h-2" />
