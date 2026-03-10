@@ -15,6 +15,12 @@ interface Meta {
   current: number;
 }
 
+interface MetaCardProps {
+  meta: Meta;
+  onIncrement: (id: string) => void;
+  onClick: (meta: Meta) => void;
+}
+
 function EmptyState({ onAdd }: { onAdd: () => void }) {
   return (
     <motion.div
@@ -35,7 +41,7 @@ function EmptyState({ onAdd }: { onAdd: () => void }) {
   );
 }
 
-function MetaCard({ meta, onIncrement }: { meta: Meta; onIncrement: (id: string) => void }) {
+function MetaCard({ meta, onIncrement, onClick }: MetaCardProps) {
   const percent = Math.min(Math.round((meta.current / meta.target) * 100), 100);
   const isDone = meta.current >= meta.target;
 
@@ -44,7 +50,8 @@ function MetaCard({ meta, onIncrement }: { meta: Meta; onIncrement: (id: string)
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-card rounded-2xl p-5 shadow-sm border border-border flex flex-col gap-4"
+      onClick={() => onClick(meta)}
+      className="bg-card rounded-2xl p-5 shadow-sm border border-border flex flex-col gap-4 cursor-pointer hover:shadow-md hover:border-primary/20 transition-all"
     >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
@@ -70,7 +77,10 @@ function MetaCard({ meta, onIncrement }: { meta: Meta; onIncrement: (id: string)
         variant="outline"
         size="sm"
         className="w-full rounded-xl gap-1"
-        onClick={() => onIncrement(meta.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          onIncrement(meta.id);
+        }}
         disabled={isDone}
       >
         <Plus className="h-4 w-4" />
@@ -83,22 +93,48 @@ function MetaCard({ meta, onIncrement }: { meta: Meta; onIncrement: (id: string)
 export default function MetasPage() {
   const [metas, setMetas] = useState<Meta[]>([]);
   const [open, setOpen] = useState(false);
+  const [editingMeta, setEditingMeta] = useState<Meta | null>(null);
+  
   const [title, setTitle] = useState("");
   const [target, setTarget] = useState("");
 
-  const handleSave = () => {
-    if (!title.trim() || !target.trim() || Number(target) <= 0) return;
-    const newMeta: Meta = {
-      id: crypto.randomUUID(),
-      title: title.trim(),
-      target: Number(target),
-      current: 0,
-    };
-    setMetas((prev) => [...prev, newMeta]);
+  const handleOpenNew = () => {
+    setEditingMeta(null);
     setTitle("");
     setTarget("");
+    setOpen(true);
+  };
+
+  const handleOpenEdit = (meta: Meta) => {
+    setEditingMeta(meta);
+    setTitle(meta.title);
+    setTarget(meta.target.toString());
+    setOpen(true);
+  };
+
+  const handleSave = () => {
+    if (!title.trim() || !target.trim() || Number(target) <= 0) return;
+    
+    if (editingMeta) {
+      setMetas((prev) =>
+        prev.map((m) =>
+          m.id === editingMeta.id
+            ? { ...m, title: title.trim(), target: Number(target) }
+            : m
+        )
+      );
+      toast({ title: "Meta atualizada!" });
+    } else {
+      const newMeta: Meta = {
+        id: crypto.randomUUID(),
+        title: title.trim(),
+        target: Number(target),
+        current: 0,
+      };
+      setMetas((prev) => [...prev, newMeta]);
+      toast({ title: "Meta criada!", description: `"${newMeta.title}" adicionada com sucesso.` });
+    }
     setOpen(false);
-    toast({ title: "Meta criada!", description: `"${newMeta.title}" adicionada com sucesso.` });
   };
 
   const handleIncrement = (id: string) => {
@@ -121,22 +157,22 @@ export default function MetasPage() {
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground tracking-tight">Metas</h1>
           <p className="text-sm md:text-base text-muted-foreground mt-1">Acompanhe seu progresso quantitativo.</p>
         </div>
-        <Button onClick={() => setOpen(true)} className="gap-2 rounded-xl hidden sm:flex">
+        <Button onClick={handleOpenNew} className="gap-2 rounded-xl hidden sm:flex">
           <Plus className="h-4 w-4" />
           <span>Nova Meta</span>
         </Button>
-        <Button onClick={() => setOpen(true)} size="icon" className="rounded-full h-12 w-12 bg-blue-600 text-white hover:bg-blue-700 shadow-xl fixed bottom-20 right-4 z-40 sm:hidden">
+        <Button onClick={handleOpenNew} size="icon" className="rounded-full h-12 w-12 bg-blue-600 text-white hover:bg-blue-700 shadow-xl fixed bottom-20 right-4 z-40 sm:hidden">
           <Plus className="h-6 w-6" />
         </Button>
       </motion.div>
 
       {metas.length === 0 ? (
-        <EmptyState onAdd={() => setOpen(true)} />
+        <EmptyState onAdd={handleOpenNew} />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <AnimatePresence>
             {metas.map((meta) => (
-              <MetaCard key={meta.id} meta={meta} onIncrement={handleIncrement} />
+              <MetaCard key={meta.id} meta={meta} onIncrement={handleIncrement} onClick={handleOpenEdit} />
             ))}
           </AnimatePresence>
         </div>
@@ -145,7 +181,7 @@ export default function MetasPage() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="w-screen h-[100dvh] max-w-full m-0 rounded-none p-6 sm:h-auto sm:w-full sm:max-w-md sm:rounded-2xl border-slate-200 shadow-xl flex flex-col pt-12 sm:pt-6">
           <DialogHeader>
-            <DialogTitle>Nova Meta</DialogTitle>
+            <DialogTitle>{editingMeta ? "Editar Meta" : "Nova Meta"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">

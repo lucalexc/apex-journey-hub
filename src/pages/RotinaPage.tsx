@@ -72,17 +72,19 @@ const defaultItems: RoutineItem[] = [
   { id: "8", name: "Desligar Telas", period: "night", time: "21:30", done: false },
 ];
 
-function RoutineCard({ item, onToggle }: { item: RoutineItem; onToggle: (id: string) => void }) {
+function RoutineCard({ item, onToggle, onClick }: { item: RoutineItem; onToggle: (id: string) => void; onClick: (item: RoutineItem) => void }) {
   return (
     <motion.div
       layout
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className={`flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-100 transition-opacity ${item.done ? "opacity-60" : ""}`}
+      onClick={() => onClick(item)}
+      className={`flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-100 cursor-pointer hover:shadow-md transition-all ${item.done ? "opacity-60" : ""}`}
     >
       <Checkbox
         checked={item.done}
         onCheckedChange={() => onToggle(item.id)}
+        onClick={(e) => e.stopPropagation()}
         className={`rounded-full h-5 w-5 ${item.done ? "data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500" : ""}`}
       />
       <span className="text-xs font-mono text-slate-400 font-medium w-10 shrink-0">{item.time}</span>
@@ -197,9 +199,24 @@ export default function RotinaPage() {
   const [items, setItems] = useState<RoutineItem[]>(defaultItems);
   const [open, setOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<RoutineItem | null>(null);
   
   const [name, setName] = useState("");
   const [time, setTime] = useState("07:00");
+
+  const handleOpenNew = () => {
+    setEditingItem(null);
+    setName("");
+    setTime("07:00");
+    setOpen(true);
+  };
+
+  const handleOpenEdit = (item: RoutineItem) => {
+    setEditingItem(item);
+    setName(item.name);
+    setTime(item.time);
+    setOpen(true);
+  };
 
   function getPeriodByTime(t: string): Period {
     const [h] = t.split(":").map(Number);
@@ -214,12 +231,22 @@ export default function RotinaPage() {
   const handleSave = () => {
     if (!name.trim()) return;
     const period = getPeriodByTime(time);
-    const newItem: RoutineItem = { id: crypto.randomUUID(), name: name.trim(), period, time, done: false };
-    setItems((prev) => [...prev, newItem].sort((a, b) => a.time.localeCompare(b.time)));
-    setName("");
-    setTime("07:00");
+    
+    if (editingItem) {
+      setItems((prev) =>
+        prev.map((i) =>
+          i.id === editingItem.id
+            ? { ...i, name: name.trim(), period, time }
+            : i
+        ).sort((a, b) => a.time.localeCompare(b.time))
+      );
+      toast({ title: "Bloco atualizado!" });
+    } else {
+      const newItem: RoutineItem = { id: crypto.randomUUID(), name: name.trim(), period, time, done: false };
+      setItems((prev) => [...prev, newItem].sort((a, b) => a.time.localeCompare(b.time)));
+      toast({ title: "Bloco criado!", description: `"${newItem.name}" adicionado à ${periodConfig[period].label}.` });
+    }
     setOpen(false);
-    toast({ title: "Bloco criado!", description: `"${newItem.name}" adicionado à ${periodConfig[period].label}.` });
   };
 
   const handleToggle = (id: string) => {
@@ -280,11 +307,11 @@ export default function RotinaPage() {
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">Minha Rotina</h1>
           <p className="text-sm md:text-base text-slate-500 mt-2">Sua máquina diária de progresso.</p>
         </div>
-        <Button onClick={() => setOpen(true)} className="gap-2 rounded-xl h-10 px-4 bg-slate-900 text-white hover:bg-slate-800 font-bold hidden sm:flex">
+        <Button onClick={handleOpenNew} className="gap-2 rounded-xl h-10 px-4 bg-slate-900 text-white hover:bg-slate-800 font-bold hidden sm:flex">
           <Plus className="h-4 w-4" />
           <span>Novo Bloco</span>
         </Button>
-        <Button onClick={() => setOpen(true)} size="icon" className="rounded-full h-12 w-12 bg-blue-600 text-white hover:bg-blue-700 shadow-xl fixed bottom-20 right-4 z-40 sm:hidden">
+        <Button onClick={handleOpenNew} size="icon" className="rounded-full h-12 w-12 bg-blue-600 text-white hover:bg-blue-700 shadow-xl fixed bottom-20 right-4 z-40 sm:hidden">
           <Plus className="h-6 w-6" />
         </Button>
       </div>
@@ -315,7 +342,7 @@ export default function RotinaPage() {
                     <p className="text-sm font-medium text-slate-400 text-center py-6 border-2 border-dashed border-slate-100 rounded-xl bg-slate-50/50">Livre</p>
                   ) : (
                     periodItems.map((item) => (
-                      <RoutineCard key={item.id} item={item} onToggle={handleToggle} />
+                      <RoutineCard key={item.id} item={item} onToggle={handleToggle} onClick={handleOpenEdit} />
                     ))
                   )}
                 </AnimatePresence>
@@ -325,12 +352,13 @@ export default function RotinaPage() {
         })}
       </div>
 
-      {/* Modal Criar Bloco */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="w-screen h-[100dvh] max-w-full m-0 rounded-none p-6 sm:h-auto sm:w-full sm:max-w-md sm:rounded-2xl border-slate-200 bg-white shadow-xl flex flex-col pt-12 sm:pt-6">
           <DialogHeader>
-            <DialogTitle className="text-slate-900">Novo Bloco de Rotina</DialogTitle>
-            <DialogDescription className="text-slate-500">Adicione um novo hábito ao seu dia.</DialogDescription>
+            <DialogTitle className="text-slate-900">{editingItem ? "Editar Bloco de Rotina" : "Novo Bloco de Rotina"}</DialogTitle>
+            <DialogDescription className="text-slate-500">
+              {editingItem ? "Altere os detalhes do seu hábito." : "Adicione um novo hábito ao seu dia."}
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
