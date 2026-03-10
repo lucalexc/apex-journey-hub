@@ -109,8 +109,8 @@ export function TemperamentTab() {
 
   // Quiz flow
   if (step >= 0) {
-    const q = questions[step];
-    const progress = ((step + 1) / questions.length) * 100;
+    const q = temperamentQuestions[step];
+    const progress = ((step + 1) / temperamentQuestions.length) * 100;
     
     // Mapeamento dos tipos do array novo para os tipos do temperamentResults
     const typeMap: Record<string, string> = {
