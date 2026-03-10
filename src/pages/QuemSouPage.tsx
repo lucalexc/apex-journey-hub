@@ -11,7 +11,7 @@ export default function QuemSouPage() {
   const [activeTab, setActiveTab] = useState("necrologio");
 
   return (
-    <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-6">
+    <div className="w-full h-full p-4 md:p-8 max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -20,12 +20,12 @@ export default function QuemSouPage() {
         className="space-y-1"
       >
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-2xl bg-primary/10 flex items-center justify-center">
-            <Fingerprint className="h-5 w-5 text-primary" />
+          <div className="h-10 w-10 md:h-12 md:w-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <Fingerprint className="h-5 w-5 md:h-6 md:w-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Minha Identidade</h1>
-            <p className="text-sm text-muted-foreground">O ponto de partida da sua ascensão</p>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">Minha Identidade</h1>
+            <p className="text-sm md:text-base text-muted-foreground">O ponto de partida da sua ascensão</p>
           </div>
         </div>
       </motion.div>

@@ -115,15 +115,18 @@ export default function MetasPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 md:px-6 py-8">
+    <div className="w-full h-full px-4 py-6 md:px-8 md:py-10 max-w-3xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Metas</h1>
-          <p className="text-sm text-muted-foreground mt-1">Acompanhe seu progresso quantitativo.</p>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground tracking-tight">Metas</h1>
+          <p className="text-sm md:text-base text-muted-foreground mt-1">Acompanhe seu progresso quantitativo.</p>
         </div>
-        <Button onClick={() => setOpen(true)} className="gap-2 rounded-xl">
+        <Button onClick={() => setOpen(true)} className="gap-2 rounded-xl hidden sm:flex">
           <Plus className="h-4 w-4" />
-          <span className="hidden sm:inline">Nova Meta</span>
+          <span>Nova Meta</span>
+        </Button>
+        <Button onClick={() => setOpen(true)} size="icon" className="rounded-full h-12 w-12 bg-blue-600 text-white hover:bg-blue-700 shadow-xl fixed bottom-20 right-4 z-40 sm:hidden">
+          <Plus className="h-6 w-6" />
         </Button>
       </motion.div>
 
@@ -140,7 +143,7 @@ export default function MetasPage() {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md rounded-2xl">
+        <DialogContent className="w-screen h-[100dvh] max-w-full m-0 rounded-none p-6 sm:h-auto sm:w-full sm:max-w-md sm:rounded-2xl border-slate-200 shadow-xl flex flex-col pt-12 sm:pt-6">
           <DialogHeader>
             <DialogTitle>Nova Meta</DialogTitle>
           </DialogHeader>
@@ -154,9 +157,9 @@ export default function MetasPage() {
               <Input id="meta-target" type="number" min={1} placeholder="30" value={target} onChange={(e) => setTarget(e.target.value)} />
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
-            <Button onClick={handleSave} disabled={!title.trim() || !target.trim() || Number(target) <= 0}>Salvar</Button>
+          <DialogFooter className="mt-auto sm:mt-0 pt-6 sm:pt-0">
+            <Button variant="ghost" className="w-full sm:w-auto hover:bg-slate-100 text-slate-600 font-medium mb-2 sm:mb-0" onClick={() => setOpen(false)}>Cancelar</Button>
+            <Button onClick={handleSave} disabled={!title.trim() || !target.trim() || Number(target) <= 0} className="w-full sm:w-auto h-12 sm:h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl px-6">Salvar</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

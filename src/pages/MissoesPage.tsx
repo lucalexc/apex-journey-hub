@@ -68,8 +68,8 @@ function PhaseCardActive({ phase, index }: { phase: MissionPhase; index: number 
             Fase Atual
           </Badge>
         </div>
-        <h3 className="text-xl font-bold text-foreground">{phase.title}</h3>
-        <p className="text-sm text-muted-foreground mt-1">{phase.description}</p>
+        <h3 className="text-xl md:text-2xl font-bold text-foreground">{phase.title}</h3>
+        <p className="text-sm md:text-base text-muted-foreground mt-1">{phase.description}</p>
 
         <div className="mt-4 space-y-2">
           <div className="flex items-center justify-between text-xs">
@@ -118,14 +118,14 @@ function PhaseCardLocked({ phase, index }: { phase: MissionPhase; index: number 
 
 export default function MissoesPage() {
   return (
-    <div className="max-w-2xl mx-auto px-4 md:px-6 py-8">
+    <div className="w-full h-full px-4 py-6 md:px-8 md:py-10 max-w-3xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <h1 className="text-2xl font-bold text-foreground">Mapa de Missões</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground tracking-tight">Mapa de Missões</h1>
+        <p className="text-sm md:text-base text-muted-foreground mt-2">
           Sua jornada de transformação em 25 fases. Avance no seu ritmo.
         </p>
       </motion.div>

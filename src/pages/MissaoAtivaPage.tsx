@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function MissaoAtivaPage() {
   return (
-    <div className="max-w-2xl mx-auto px-4 md:px-6 py-8">
+    <div className="w-full h-full px-4 py-6 md:px-8 md:py-10 max-w-3xl mx-auto">
       {/* Header */}
       <div className="mb-2 flex items-center">
         <Button variant="ghost" size="icon" asChild className="-ml-2">
@@ -25,8 +25,8 @@ export default function MissaoAtivaPage() {
         <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full uppercase tracking-wider mb-3">
           Fase 3
         </span>
-        <h1 className="text-3xl font-bold text-slate-900">Ambiente</h1>
-        <p className="text-slate-500 mt-2 max-w-md mx-auto">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">Ambiente</h1>
+        <p className="text-sm md:text-base text-slate-500 mt-2 max-w-md mx-auto">
           Projete o ambiente que molda quem você se torna.
         </p>
         
@@ -133,7 +133,7 @@ export default function MissaoAtivaPage() {
       <div className="mt-12 mb-8">
         <Button 
           disabled 
-          className="w-full h-14 rounded-2xl text-base font-bold shadow-sm opacity-50 bg-slate-200 text-slate-400 cursor-not-allowed uppercase tracking-wide border-2 border-slate-200"
+          className="w-full h-14 rounded-2xl text-sm md:text-base font-bold shadow-sm opacity-50 bg-slate-200 text-slate-400 cursor-not-allowed uppercase tracking-wide border-2 border-slate-200"
         >
           Finalizar Missão: Ambiente
         </Button>

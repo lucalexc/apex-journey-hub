@@ -25,14 +25,14 @@ export default function BibliotecaPage() {
   });
 
   return (
-    <div className="p-4 md:p-6 max-w-7xl mx-auto">
+    <div className="w-full h-full px-4 py-6 md:px-8 md:py-10 max-w-7xl mx-auto">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
         <div className="flex items-center gap-3 mb-1">
-          <BookOpen className="w-6 h-6 text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">Biblioteca da Sabedoria</h1>
+          <BookOpen className="w-6 md:w-8 h-6 md:h-8 text-primary" />
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground tracking-tight">Biblioteca da Sabedoria</h1>
         </div>
-        <p className="text-sm text-muted-foreground">Leia, assista e aplique o conhecimento dos melhores livros.</p>
+        <p className="text-sm md:text-base text-muted-foreground">Leia, assista e aplique o conhecimento dos melhores livros.</p>
       </motion.div>
 
       {/* Filters */}

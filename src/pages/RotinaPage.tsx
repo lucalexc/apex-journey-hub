@@ -256,7 +256,7 @@ export default function RotinaPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 md:px-6 py-8">
+    <div className="w-full h-full px-4 py-6 md:px-8 md:py-10">
       {/* Banner de Growth */}
       <motion.div 
         initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} 
@@ -277,19 +277,22 @@ export default function RotinaPage() {
 
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Minha Rotina</h1>
-          <p className="text-sm text-slate-500 mt-1">Sua máquina diária de progresso.</p>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">Minha Rotina</h1>
+          <p className="text-sm md:text-base text-slate-500 mt-2">Sua máquina diária de progresso.</p>
         </div>
-        <Button onClick={() => setOpen(true)} className="gap-2 rounded-xl h-10 px-4 bg-slate-900 text-white hover:bg-slate-800 font-bold">
+        <Button onClick={() => setOpen(true)} className="gap-2 rounded-xl h-10 px-4 bg-slate-900 text-white hover:bg-slate-800 font-bold hidden sm:flex">
           <Plus className="h-4 w-4" />
-          <span className="hidden sm:inline">Novo Bloco</span>
+          <span>Novo Bloco</span>
+        </Button>
+        <Button onClick={() => setOpen(true)} size="icon" className="rounded-full h-12 w-12 bg-blue-600 text-white hover:bg-blue-700 shadow-xl fixed bottom-20 right-4 z-40 sm:hidden">
+          <Plus className="h-6 w-6" />
         </Button>
       </div>
 
       <CircadianCard />
 
-      {/* Blocos em 3 Colunas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Blocos em 3 Colunas Fluidas */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {(["morning", "afternoon", "night"] as Period[]).map((p) => {
           const cfg = periodConfig[p];
           const periodItems = items.filter((i) => i.period === p);
@@ -324,7 +327,7 @@ export default function RotinaPage() {
 
       {/* Modal Criar Bloco */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md rounded-2xl border-slate-200 bg-white shadow-xl">
+        <DialogContent className="w-screen h-[100dvh] max-w-full m-0 rounded-none p-6 sm:h-auto sm:w-full sm:max-w-md sm:rounded-2xl border-slate-200 bg-white shadow-xl flex flex-col pt-12 sm:pt-6">
           <DialogHeader>
             <DialogTitle className="text-slate-900">Novo Bloco de Rotina</DialogTitle>
             <DialogDescription className="text-slate-500">Adicione um novo hábito ao seu dia.</DialogDescription>
@@ -344,16 +347,16 @@ export default function RotinaPage() {
               )}
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="ghost" className="hover:bg-slate-100 text-slate-600 font-medium" onClick={() => setOpen(false)}>Cancelar</Button>
-            <Button onClick={handleSave} disabled={!name.trim()} className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl px-6">Salvar</Button>
+          <DialogFooter className="mt-auto sm:mt-0 pt-6 sm:pt-0">
+            <Button variant="ghost" className="hover:bg-slate-100 text-slate-600 font-medium w-full sm:w-auto mb-2 sm:mb-0" onClick={() => setOpen(false)}>Cancelar</Button>
+            <Button onClick={handleSave} disabled={!name.trim()} className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl px-6 w-full sm:w-auto h-12 sm:h-10">Salvar</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Modal Compartilhar (Growth) */}
       <Dialog open={shareOpen} onOpenChange={setShareOpen}>
-        <DialogContent className="sm:max-w-[400px] w-[90vw] rounded-3xl p-6 bg-slate-50 border-slate-200 space-y-0 gap-6">
+        <DialogContent className="w-screen h-[100dvh] max-w-full m-0 rounded-none p-6 sm:h-auto sm:w-full sm:max-w-[420px] sm:rounded-3xl bg-slate-50 border-slate-200 space-y-0 gap-6 flex flex-col pt-12 sm:pt-6 overflow-y-auto">
           <DialogHeader className="mb-2">
             <DialogTitle className="text-center text-xl font-bold text-slate-900 flex items-center justify-center gap-2">
               <Trophy className="h-5 w-5 text-yellow-500" />
@@ -412,7 +415,7 @@ export default function RotinaPage() {
           </div>
 
           {/* Ações reais do usuário */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3 pt-6 mt-auto">
             <Button onClick={handleDownloadImage} className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-2xl h-14 font-bold gap-2 text-[15px] shadow-lg shadow-blue-500/20">
               <Download className="w-5 h-5 opacity-90" /> Baixar Imagem (PNG)
             </Button>
