@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
-import { temperamentQuestions, temperamentResults, type TemperamentResult } from "@/data/quem-sou";
+import { questions as temperamentQuestions, temperamentResults, type TemperamentResult } from "@/data/quem-sou";
 
 const elementIcons: Record<string, React.ReactNode> = {
   Fogo: <Flame className="h-8 w-8" />,
