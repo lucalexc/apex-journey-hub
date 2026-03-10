@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus } from "lucide-react";
 import { format, isToday, isBefore, startOfDay, addDays, isAfter } from "date-fns";
@@ -58,7 +58,7 @@ function TaskCard({ task, onToggle, onClick, onTimeUpdate }: TaskCardProps) {
   const [elapsed, setElapsed] = useState(task.timeSpent || 0);
 
   // Focus Timer Logic
-  useState(() => {
+  useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isTimerActive && !task.done) {
       interval = setInterval(() => {

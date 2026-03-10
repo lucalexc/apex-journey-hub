@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
-import { temperamentQuestions, temperamentResults, type TemperamentResult } from "@/data/quem-sou";
+import { questions as temperamentQuestions, temperamentResults, type TemperamentResult } from "@/data/quem-sou";
 
 const elementIcons: Record<string, React.ReactNode> = {
   Fogo: <Flame className="h-8 w-8" />,
@@ -109,8 +109,8 @@ export function TemperamentTab() {
 
   // Quiz flow
   if (step >= 0) {
-    const q = questions[step];
-    const progress = ((step + 1) / questions.length) * 100;
+    const q = temperamentQuestions[step];
+    const progress = ((step + 1) / temperamentQuestions.length) * 100;
     
     // Mapeamento dos tipos do array novo para os tipos do temperamentResults
     const typeMap: Record<string, string> = {
@@ -124,7 +124,7 @@ export function TemperamentTab() {
       <div className="max-w-xl mx-auto space-y-6">
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>Pergunta {step + 1} de {questions.length}</span>
+            <span>Pergunta {step + 1} de {temperamentQuestions.length}</span>
             <span>{Math.round(progress)}%</span>
           </div>
           <Progress value={progress} className="h-2" />
