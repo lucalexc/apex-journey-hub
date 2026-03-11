@@ -29,7 +29,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onSignup }: HeroSectionProps) {
   return (
-    <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+    <section className="relative pt-24 pb-16 md:pt-28 md:pb-24 overflow-hidden">
       {/* Subtle glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-blue-500/[0.05] rounded-full blur-[140px] pointer-events-none" />
 
