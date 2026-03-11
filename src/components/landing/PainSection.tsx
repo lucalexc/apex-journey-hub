@@ -8,11 +8,11 @@ export default function PainSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Image */}
           <FadeUp className="order-2 lg:order-1">
-            <div className="rounded-3xl overflow-hidden shadow-2xl shadow-slate-200/60">
+            <div className="relative overflow-hidden rounded-3xl shadow-2xl shadow-slate-200/60">
               <img
                 src={painImg}
                 alt="Pessoa sobrecarregada com múltiplas telas"
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover scale-[1.05]"
                 loading="lazy"
               />
             </div>
