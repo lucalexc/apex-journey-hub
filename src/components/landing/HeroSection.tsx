@@ -34,9 +34,9 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onSignup }: HeroSectionProps) {
   return (
-    <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden">
+    <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
       {/* Ambient glow */}
-      <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-primary/[0.06] blur-[160px] pointer-events-none" />
+      <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-primary/[0.06] blur-[160px] pointer-events-none -z-10" />
 
       <div className="relative max-w-4xl mx-auto px-6 text-center">
         <FadeUp>
@@ -77,32 +77,34 @@ export default function HeroSection({ onSignup }: HeroSectionProps) {
 
         {/* Floating dashboard mockup */}
         <FadeUp delay={0.35}>
-          <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="mt-16 mx-auto max-w-3xl"
-          >
-            <div className="rounded-2xl border border-border bg-card shadow-2xl shadow-primary/[0.08] overflow-hidden p-1">
-              <div className="rounded-xl bg-muted/50 p-6 sm:p-8">
-                {/* Mock dashboard skeleton */}
-                <div className="flex items-center gap-3 mb-6">
+          <div className="w-full max-w-5xl mx-auto mt-12 px-4 md:px-8">
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <div className="rounded-2xl md:rounded-3xl border border-border bg-card shadow-2xl shadow-primary/[0.08] overflow-hidden aspect-video relative">
+                {/* macOS-style top bar */}
+                <div className="h-10 bg-muted flex items-center px-4 gap-2 border-b border-border">
                   <div className="w-3 h-3 rounded-full bg-destructive/60" />
                   <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
                   <div className="w-3 h-3 rounded-full bg-emerald-400/60" />
                   <div className="ml-4 h-3 w-40 rounded-full bg-border" />
                 </div>
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                  <div className="h-20 rounded-xl bg-card border border-border" />
-                  <div className="h-20 rounded-xl bg-card border border-border" />
-                  <div className="h-20 rounded-xl bg-card border border-border" />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="h-32 rounded-xl bg-card border border-border" />
-                  <div className="h-32 rounded-xl bg-primary/10 border border-primary/20" />
+                {/* Dashboard skeleton */}
+                <div className="p-4 sm:p-6 md:p-8 flex flex-col gap-4 h-[calc(100%-2.5rem)]">
+                  <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                    <div className="h-16 sm:h-20 rounded-xl bg-muted/60 border border-border animate-pulse" />
+                    <div className="h-16 sm:h-20 rounded-xl bg-muted/60 border border-border animate-pulse [animation-delay:150ms]" />
+                    <div className="h-16 sm:h-20 rounded-xl bg-muted/60 border border-border animate-pulse [animation-delay:300ms]" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 flex-1 min-h-0">
+                    <div className="rounded-xl bg-muted/60 border border-border animate-pulse [animation-delay:450ms]" />
+                    <div className="rounded-xl bg-primary/10 border border-primary/20 animate-pulse [animation-delay:600ms]" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </FadeUp>
       </div>
     </section>
