@@ -1,11 +1,11 @@
 import { useState } from "react";
 import LandingNavbar from "@/components/landing/LandingNavbar";
 import HeroSection from "@/components/landing/HeroSection";
-import PainSection from "@/components/landing/PainSection";
-import FeaturesSection from "@/components/landing/FeaturesSection";
-import SocialProofSection from "@/components/landing/SocialProofSection";
-import PricingSection from "@/components/landing/PricingSection";
+import SocialProofBar from "@/components/landing/SocialProofBar";
+import BentoSection from "@/components/landing/BentoSection";
+import ObjectionSection from "@/components/landing/ObjectionSection";
 import FaqSection from "@/components/landing/FaqSection";
+import CtaFinalSection from "@/components/landing/CtaFinalSection";
 import LandingFooter from "@/components/landing/LandingFooter";
 import AuthModal from "@/components/AuthModal";
 
@@ -19,17 +19,14 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 overflow-x-hidden relative">
-      {/* Subtle hero glow */}
-      <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-blue-500/[0.05] blur-[160px] pointer-events-none" />
-
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
       <LandingNavbar onLogin={() => openAuth("login")} onSignup={() => openAuth("signup")} />
       <HeroSection onSignup={() => openAuth("signup")} />
-      <PainSection />
-      <FeaturesSection />
-      <SocialProofSection />
-      <PricingSection onSignup={() => openAuth("signup")} />
+      <SocialProofBar />
+      <BentoSection />
+      <ObjectionSection />
       <FaqSection onSignup={() => openAuth("signup")} />
+      <CtaFinalSection onSignup={() => openAuth("signup")} />
       <LandingFooter />
       <AuthModal open={authOpen} onOpenChange={setAuthOpen} defaultTab={authTab} />
     </div>
