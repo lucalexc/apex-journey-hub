@@ -13,7 +13,7 @@ interface BentoCardProps {
 function BentoCard({ icon, title, description, className = "", dark, children }: BentoCardProps) {
   return (
     <div
-      className={`group relative rounded-2xl border overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl p-7 sm:p-8 flex flex-col ${
+      className={`flex flex-col h-full w-full overflow-hidden rounded-3xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg p-7 sm:p-8 relative ${
         dark
           ? "bg-foreground border-foreground/80 text-primary-foreground"
           : "bg-card border-border hover:border-primary/30 hover:shadow-primary/[0.08]"
@@ -36,7 +36,7 @@ function BentoCard({ icon, title, description, className = "", dark, children }:
 export default function BentoSection() {
   return (
     <section className="py-24 md:py-36 relative">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[140px] pointer-events-none -z-10" />
 
       <div className="relative max-w-6xl mx-auto px-6">
         <FadeUp>
@@ -53,17 +53,14 @@ export default function BentoSection() {
           </div>
         </FadeUp>
 
-        {/* Bento Grid — 1 large left, 2 stacked right on desktop; single col mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Large card */}
-          <FadeUp delay={0.1} className="md:row-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:auto-rows-[minmax(250px,_auto)] gap-6">
+          <FadeUp delay={0.1} className="md:col-span-2">
             <BentoCard
               icon={<Clock className="w-6 h-6" />}
               title="Rotina Milimétrica"
               description="Sua vida dividida entre Manhã, Tarde e Noite com blocos inteligentes. Sem listas infinitas — apenas o que importa agora."
               className="h-full"
             >
-              {/* Mini visual */}
               <div className="mt-6 grid grid-cols-3 gap-2">
                 {["Manhã", "Tarde", "Noite"].map((label) => (
                   <div
@@ -83,14 +80,13 @@ export default function BentoSection() {
             </BentoCard>
           </FadeUp>
 
-          {/* Top-right card */}
           <FadeUp delay={0.2}>
             <BentoCard
               icon={<Map className="w-5 h-5" />}
               title="Mapa de Missões"
               description="25 fases de evolução com checkpoints e desbloqueios. Você enxerga exatamente onde está e para onde vai."
+              className="h-full"
             >
-              {/* Mini radar mock */}
               <div className="mt-5 flex items-center justify-center">
                 <div className="relative w-28 h-28">
                   <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -112,13 +108,13 @@ export default function BentoSection() {
             </BentoCard>
           </FadeUp>
 
-          {/* Bottom-right card — dark */}
-          <FadeUp delay={0.3}>
+          <FadeUp delay={0.3} className="md:col-span-3">
             <BentoCard
               icon={<Moon className="w-5 h-5" />}
               title="Check-in Noturno"
               description="Encerre o dia com reflexão guiada. O sistema calibra amanhã baseado no que você viveu hoje."
               dark
+              className="h-full"
             >
               <div className="mt-5 flex items-center gap-3">
                 <div className="h-2 flex-1 rounded-full bg-primary-foreground/10">
