@@ -41,9 +41,6 @@ export default function QuemSouPage() {
           <TabsTrigger value="camadas" className="rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-card text-xs sm:text-sm px-3 py-2">
             🪜 12 Camadas
           </TabsTrigger>
-          <TabsTrigger value="raio-x" className="rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-card text-xs sm:text-sm px-3 py-2">
-            🧬 Raio-X
-          </TabsTrigger>
         </TabsList>
 
         <AnimatePresence mode="wait">
