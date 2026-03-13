@@ -9,7 +9,6 @@ const navItems = [
   { title: "Rotina", url: "/rotina", icon: Clock },
   { title: "Missões", url: "/missoes", icon: Map },
   { title: "Quem Sou", url: "/quem-sou", icon: Fingerprint },
-  { title: "Biblioteca", url: "/biblioteca", icon: BookOpen },
 ];
 
 export { navItems };

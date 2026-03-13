@@ -60,9 +60,6 @@ export default function QuemSouPage() {
             <TabsContent value="camadas" className="mt-6" forceMount={activeTab === "camadas" ? true : undefined}>
               <LayersTab />
             </TabsContent>
-            <TabsContent value="raio-x" className="mt-6" forceMount={activeTab === "raio-x" ? true : undefined}>
-              <BioRadarTab />
-            </TabsContent>
           </motion.div>
         </AnimatePresence>
       </Tabs>

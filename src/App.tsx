@@ -40,7 +40,6 @@ const App = () => (
             <Route path="/missoes" element={<MissoesPage />} />
             <Route path="/missoes/:id" element={<MissaoAtivaPage />} />
             <Route path="/quem-sou" element={<QuemSouPage />} />
-            <Route path="/biblioteca" element={<BibliotecaPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
