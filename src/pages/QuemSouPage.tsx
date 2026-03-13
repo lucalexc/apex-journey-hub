@@ -5,7 +5,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { NecrologyTab } from "@/components/quem-sou/NecrologyTab";
 import { TemperamentTab } from "@/components/quem-sou/TemperamentTab";
 import { LayersTab } from "@/components/quem-sou/LayersTab";
-import { BioRadarTab } from "@/components/quem-sou/BioRadarTab";
 
 export default function QuemSouPage() {
   const [activeTab, setActiveTab] = useState("necrologio");
