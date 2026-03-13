@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus } from "lucide-react";
+import { Plus, Clock, List, CalendarDays } from "lucide-react";
 import { format, isToday, isBefore, startOfDay, addDays, isAfter } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SmartDatePicker } from "@/components/tarefas/SmartDatePicker";
+import { TimePickerModal } from "@/components/tarefas/TimePickerModal";
+import { RepeatModal, type RepeatConfig } from "@/components/tarefas/RepeatModal";
+import { CalendarView } from "@/components/tarefas/CalendarView";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -21,7 +24,9 @@ interface Task {
   project: string;
   dueDate: Date | undefined;
   done: boolean;
-  timeSpent?: number; // Time in seconds
+  timeSpent?: number;
+  time?: string;
+  repeat?: RepeatConfig;
 }
 
 interface TaskCardProps {
@@ -57,7 +62,6 @@ function TaskCard({ task, onToggle, onClick, onTimeUpdate }: TaskCardProps) {
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [elapsed, setElapsed] = useState(task.timeSpent || 0);
 
-  // Focus Timer Logic
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isTimerActive && !task.done) {
@@ -71,15 +75,10 @@ function TaskCard({ task, onToggle, onClick, onTimeUpdate }: TaskCardProps) {
   const handleTimerToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (task.done) return;
-    
     if (isTimerActive) {
-      // Stopping timer
       setIsTimerActive(false);
-      if (onTimeUpdate) {
-        onTimeUpdate(task.id, elapsed);
-      }
+      if (onTimeUpdate) onTimeUpdate(task.id, elapsed);
     } else {
-      // Starting timer
       setIsTimerActive(true);
     }
   };
@@ -90,73 +89,80 @@ function TaskCard({ task, onToggle, onClick, onTimeUpdate }: TaskCardProps) {
     return `${m}:${s}`;
   };
 
+  const repeatLabel = task.repeat
+    ? `🔁 ${task.repeat.count}x/${task.repeat.period === "dia" ? "dia" : task.repeat.period === "semana" ? "sem" : "mês"}`
+    : null;
+
   return (
-    <motion.div 
-      layout 
-      initial={{ opacity: 0, y: 10 }} 
-      animate={{ opacity: 1, y: 0 }} 
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       onClick={() => onClick(task)}
       className={cn(
         "flex flex-col gap-3 bg-card rounded-xl p-4 shadow-sm border border-border cursor-pointer hover:shadow-md transition-all relative overflow-hidden",
-        isTimerActive && "ring-2 ring-blue-500 shadow-blue-500/20"
+        isTimerActive && "ring-2 ring-primary shadow-primary/20"
       )}
     >
-      {/* Animated active background pulse */}
       {isTimerActive && (
-        <div className="absolute inset-0 bg-blue-500/5 animate-pulse rounded-xl pointer-events-none" />
+        <div className="absolute inset-0 bg-primary/5 animate-pulse rounded-xl pointer-events-none" />
       )}
 
       <div className="flex items-center gap-3 relative z-10">
-        <Checkbox 
-          checked={task.done} 
+        <Checkbox
+          checked={task.done}
           onCheckedChange={() => {
             if (isTimerActive) setIsTimerActive(false);
             onToggle(task.id);
-          }} 
+          }}
           onClick={(e) => e.stopPropagation()}
-          className="rounded-full h-5 w-5 shrink-0" 
+          className="rounded-full h-5 w-5 shrink-0"
         />
         <div className="flex-1 min-w-0">
           <p className={cn("text-sm font-medium text-foreground transition-all", task.done && "line-through opacity-50")}>{task.title}</p>
         </div>
-        
-        {/* Timer UI inside Card */}
+
         <div className="flex items-center gap-2 shrink-0">
           {(elapsed > 0 || isTimerActive) && (
-            <span className={cn(
-              "text-xs font-mono font-bold tracking-wider",
-              isTimerActive ? "text-blue-600 font-black" : "text-muted-foreground"
-            )}>
+            <span className={cn("text-xs font-mono font-bold tracking-wider", isTimerActive ? "text-primary font-black" : "text-muted-foreground")}>
               {formatTime(elapsed)}
             </span>
           )}
-          
           <button
             onClick={handleTimerToggle}
             disabled={task.done}
             className={cn(
               "h-8 w-8 rounded-full flex items-center justify-center transition-colors border",
-              isTimerActive 
-                ? "bg-red-50 text-red-600 border-red-200 hover:bg-red-100" 
-                : "bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400 hover:text-blue-600",
+              isTimerActive
+                ? "bg-destructive/10 text-destructive border-destructive/20 hover:bg-destructive/20"
+                : "bg-secondary text-muted-foreground border-border hover:bg-secondary/80 hover:text-primary",
               task.done && "opacity-50 cursor-not-allowed"
             )}
           >
             {isTimerActive ? (
-               <div className="w-3 h-3 bg-current rounded-[2px]" /> // Stop Square
+              <div className="w-3 h-3 bg-current rounded-[2px]" />
             ) : (
-               <div className="w-0 h-0 border-t-[5px] border-t-transparent border-l-[8px] border-l-current border-b-[5px] border-b-transparent ml-0.5" /> // Play Triangle
+              <div className="w-0 h-0 border-t-[5px] border-t-transparent border-l-[8px] border-l-current border-b-[5px] border-b-transparent ml-0.5" />
             )}
           </button>
         </div>
       </div>
 
       <div className="flex items-center justify-between mt-1 relative z-10 pl-8">
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 flex-wrap">
           {task.dueDate && (
             <span className={`text-[11px] font-semibold ${isOverdue ? "text-destructive" : "text-muted-foreground"}`}>
               {format(task.dueDate, "dd MMM", { locale: ptBR })}
             </span>
+          )}
+          {task.time && (
+            <span className="text-[11px] text-muted-foreground flex items-center gap-0.5">
+              <Clock className="h-3 w-3" />
+              {task.time}
+            </span>
+          )}
+          {repeatLabel && (
+            <span className="text-[11px] text-muted-foreground">{repeatLabel}</span>
           )}
           <Badge variant="secondary" className={`text-[10px] border-0 px-1.5 py-0 h-4 ${projectColors[task.project] || ""}`}>
             #{task.project}
@@ -175,12 +181,22 @@ export default function TarefasPage() {
   const [title, setTitle] = useState("");
   const [project, setProject] = useState("Pessoal");
   const [dueDate, setDueDate] = useState<Date | undefined>();
+  const [time, setTime] = useState<string | undefined>();
+  const [repeat, setRepeat] = useState<RepeatConfig | undefined>();
+
+  const [timeModalOpen, setTimeModalOpen] = useState(false);
+  const [repeatModalOpen, setRepeatModalOpen] = useState(false);
+
+  const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
+  const [calMonth, setCalMonth] = useState(new Date());
 
   const handleOpenNew = () => {
     setEditingTask(null);
     setTitle("");
     setProject("Pessoal");
     setDueDate(undefined);
+    setTime(undefined);
+    setRepeat(undefined);
     setOpen(true);
   };
 
@@ -189,23 +205,22 @@ export default function TarefasPage() {
     setTitle(task.title);
     setProject(task.project);
     setDueDate(task.dueDate);
+    setTime(task.time);
+    setRepeat(task.repeat);
     setOpen(true);
   };
 
   const handleSave = () => {
     if (!title.trim()) return;
-    
     if (editingTask) {
       setTasks((prev) =>
         prev.map((t) =>
-          t.id === editingTask.id
-            ? { ...t, title: title.trim(), project, dueDate }
-            : t
+          t.id === editingTask.id ? { ...t, title: title.trim(), project, dueDate, time, repeat } : t
         )
       );
       toast({ title: "Tarefa atualizada!" });
     } else {
-      const newTask: Task = { id: crypto.randomUUID(), title: title.trim(), project, dueDate, done: false, timeSpent: 0 };
+      const newTask: Task = { id: crypto.randomUUID(), title: title.trim(), project, dueDate, done: false, timeSpent: 0, time, repeat };
       setTasks((prev) => [...prev, newTask]);
       toast({ title: "Tarefa criada!", description: `"${newTask.title}" adicionada.` });
     }
@@ -213,16 +228,18 @@ export default function TarefasPage() {
   };
 
   const handleTimeUpdate = (id: string, timeSpent: number) => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, timeSpent } : t));
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, timeSpent } : t)));
   };
 
   const handleToggle = (id: string) => {
-    setTasks((prev) => prev.map((t) => {
-      if (t.id !== id) return t;
-      const next = !t.done;
-      if (next) toast({ title: "Tarefa concluída! ✅" });
-      return { ...t, done: next };
-    }));
+    setTasks((prev) =>
+      prev.map((t) => {
+        if (t.id !== id) return t;
+        const next = !t.done;
+        if (next) toast({ title: "Tarefa concluída! ✅" });
+        return { ...t, done: next };
+      })
+    );
   };
 
   const today = startOfDay(new Date());
@@ -238,13 +255,7 @@ export default function TarefasPage() {
       <div className="space-y-2">
         <AnimatePresence>
           {list.map((t) => (
-            <TaskCard 
-              key={t.id} 
-              task={t} 
-              onToggle={handleToggle} 
-              onClick={handleOpenEdit} 
-              onTimeUpdate={handleTimeUpdate} 
-            />
+            <TaskCard key={t.id} task={t} onToggle={handleToggle} onClick={handleOpenEdit} onTimeUpdate={handleTimeUpdate} />
           ))}
         </AnimatePresence>
       </div>
@@ -252,33 +263,69 @@ export default function TarefasPage() {
 
   return (
     <div className="w-full h-full px-4 py-6 md:px-8 md:py-10 max-w-3xl mx-auto">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-6 border-b border-transparent">
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground tracking-tight">Tarefas</h1>
           <p className="text-sm md:text-base text-muted-foreground mt-1">Sua central de ação.</p>
         </div>
-        <Button onClick={handleOpenNew} className="gap-2 rounded-xl hidden sm:flex">
-          <Plus className="h-4 w-4" />
-          <span>Nova Tarefa</span>
-        </Button>
-        <Button onClick={handleOpenNew} size="icon" className="rounded-full h-12 w-12 bg-blue-600 text-white hover:bg-blue-700 shadow-xl fixed bottom-20 right-4 z-40 sm:hidden">
+        <div className="flex items-center gap-2">
+          {/* View toggle */}
+          <div className="flex items-center bg-secondary rounded-xl p-1 gap-0.5">
+            <button
+              onClick={() => setViewMode("list")}
+              className={cn(
+                "h-8 w-8 rounded-lg flex items-center justify-center transition-all",
+                viewMode === "list" ? "bg-card shadow-sm text-primary" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <List className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("calendar")}
+              className={cn(
+                "h-8 w-8 rounded-lg flex items-center justify-center transition-all",
+                viewMode === "calendar" ? "bg-card shadow-sm text-primary" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <CalendarDays className="h-4 w-4" />
+            </button>
+          </div>
+          <Button onClick={handleOpenNew} className="gap-2 rounded-xl hidden sm:flex">
+            <Plus className="h-4 w-4" />
+            <span>Nova Tarefa</span>
+          </Button>
+        </div>
+        <Button onClick={handleOpenNew} size="icon" className="rounded-full h-12 w-12 bg-primary text-primary-foreground hover:bg-primary/90 shadow-xl fixed bottom-20 right-4 z-40 sm:hidden">
           <Plus className="h-6 w-6" />
         </Button>
       </motion.div>
 
-      <Tabs defaultValue="entrada" className="w-full">
-        <TabsList className="w-full mb-6">
-          <TabsTrigger value="entrada" className="flex-1">Entrada</TabsTrigger>
-          <TabsTrigger value="hoje" className="flex-1">Hoje</TabsTrigger>
-          <TabsTrigger value="proximos" className="flex-1">Próximos 7 dias</TabsTrigger>
-        </TabsList>
-        <TabsContent value="entrada">{renderList(tasks, "Adicione sua primeira tarefa para começar a organizar seus projetos.")}</TabsContent>
-        <TabsContent value="hoje">{renderList(todayTasks, "Nenhuma tarefa para hoje. Aproveite ou planeje algo!")}</TabsContent>
-        <TabsContent value="proximos">{renderList(next7Tasks, "Sem tarefas nos próximos 7 dias. Que tal planejar a semana?")}</TabsContent>
-      </Tabs>
+      {viewMode === "list" ? (
+        <Tabs defaultValue="entrada" className="w-full">
+          <TabsList className="w-full mb-6">
+            <TabsTrigger value="entrada" className="flex-1">Entrada</TabsTrigger>
+            <TabsTrigger value="hoje" className="flex-1">Hoje</TabsTrigger>
+            <TabsTrigger value="proximos" className="flex-1">Próximos 7 dias</TabsTrigger>
+          </TabsList>
+          <TabsContent value="entrada">{renderList(tasks, "Adicione sua primeira tarefa para começar a organizar seus projetos.")}</TabsContent>
+          <TabsContent value="hoje">{renderList(todayTasks, "Nenhuma tarefa para hoje. Aproveite ou planeje algo!")}</TabsContent>
+          <TabsContent value="proximos">{renderList(next7Tasks, "Sem tarefas nos próximos 7 dias. Que tal planejar a semana?")}</TabsContent>
+        </Tabs>
+      ) : (
+        <CalendarView
+          tasks={tasks}
+          currentMonth={calMonth}
+          onMonthChange={setCalMonth}
+          onDayClick={(date) => {
+            setDueDate(date);
+            handleOpenNew();
+          }}
+        />
+      )}
 
+      {/* Task Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="w-screen h-[100dvh] max-w-full m-0 rounded-none p-6 sm:h-auto sm:w-full sm:max-w-md sm:rounded-2xl border-slate-200 shadow-xl flex flex-col pt-12 sm:pt-6">
+        <DialogContent className="w-screen h-[100dvh] max-w-full m-0 rounded-none p-6 sm:h-auto sm:w-full sm:max-w-md sm:rounded-2xl border-border shadow-xl flex flex-col pt-12 sm:pt-6">
           <DialogHeader>
             <DialogTitle>{editingTask ? "Editar Tarefa" : "Nova Tarefa"}</DialogTitle>
           </DialogHeader>
@@ -298,15 +345,51 @@ export default function TarefasPage() {
             </div>
             <div className="space-y-2">
               <Label>Data de Vencimento</Label>
-              <SmartDatePicker value={dueDate} onChange={setDueDate} />
+              <SmartDatePicker
+                value={dueDate}
+                onChange={setDueDate}
+                onTimeClick={() => setTimeModalOpen(true)}
+                onRepeatClick={() => setRepeatModalOpen(true)}
+                time={time}
+                hasRepeat={!!repeat}
+              />
+            </div>
+            {/* Show current time/repeat inline */}
+            <div className="flex items-center gap-3 flex-wrap">
+              {time && (
+                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-lg flex items-center gap-1">
+                  <Clock className="h-3 w-3" /> {time}
+                </span>
+              )}
+              {repeat && (
+                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-lg">
+                  🔁 {repeat.count}x/{repeat.period === "dia" ? "dia" : repeat.period === "semana" ? "sem" : "mês"}
+                </span>
+              )}
             </div>
           </div>
           <DialogFooter className="mt-auto sm:mt-0 pt-6 sm:pt-0">
-            <Button variant="ghost" className="w-full sm:w-auto hover:bg-slate-100 text-slate-600 font-medium mb-2 sm:mb-0" onClick={() => setOpen(false)}>Cancelar</Button>
-            <Button onClick={handleSave} disabled={!title.trim()} className="w-full sm:w-auto h-12 sm:h-10 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl px-6">Salvar</Button>
+            <Button variant="ghost" className="w-full sm:w-auto hover:bg-secondary text-muted-foreground font-medium mb-2 sm:mb-0" onClick={() => setOpen(false)}>Cancelar</Button>
+            <Button onClick={handleSave} disabled={!title.trim()} className="w-full sm:w-auto h-12 sm:h-10 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl px-6">Salvar</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Time Picker Modal */}
+      <TimePickerModal
+        open={timeModalOpen}
+        onClose={() => setTimeModalOpen(false)}
+        onSave={(t) => setTime(t)}
+        initialTime={time}
+      />
+
+      {/* Repeat Modal */}
+      <RepeatModal
+        open={repeatModalOpen}
+        onClose={() => setRepeatModalOpen(false)}
+        onSave={(config) => setRepeat(config)}
+        initialConfig={repeat}
+      />
     </div>
   );
 }

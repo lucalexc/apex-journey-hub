@@ -174,12 +174,3 @@ export const layers = [
   { id: 12, title: "Transcendência", description: "A relação com o que está além de você. Sentido último da vida, espiritualidade e legado eterno." },
 ];
 
-export const bioAxes = ["Sono", "Foco", "Vigor Físico", "Estabilidade Emocional", "Nutrição"];
-
-export const defaultBioValues: Record<string, number> = {
-  Sono: 6,
-  Foco: 5,
-  "Vigor Físico": 7,
-  "Estabilidade Emocional": 4,
-  Nutrição: 6,
-};

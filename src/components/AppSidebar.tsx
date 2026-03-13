@@ -1,4 +1,4 @@
-import { CheckSquare, Target, Clock, Map, Fingerprint, BookOpen, LogOut } from "lucide-react";
+import { CheckSquare, Target, Clock, Map, Fingerprint, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -9,7 +9,6 @@ const navItems = [
   { title: "Rotina", url: "/rotina", icon: Clock },
   { title: "Missões", url: "/missoes", icon: Map },
   { title: "Quem Sou", url: "/quem-sou", icon: Fingerprint },
-  { title: "Biblioteca", url: "/biblioteca", icon: BookOpen },
 ];
 
 export { navItems };

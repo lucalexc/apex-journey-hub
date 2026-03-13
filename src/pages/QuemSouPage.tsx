@@ -5,7 +5,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { NecrologyTab } from "@/components/quem-sou/NecrologyTab";
 import { TemperamentTab } from "@/components/quem-sou/TemperamentTab";
 import { LayersTab } from "@/components/quem-sou/LayersTab";
-import { BioRadarTab } from "@/components/quem-sou/BioRadarTab";
 
 export default function QuemSouPage() {
   const [activeTab, setActiveTab] = useState("necrologio");
@@ -42,9 +41,6 @@ export default function QuemSouPage() {
           <TabsTrigger value="camadas" className="rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-card text-xs sm:text-sm px-3 py-2">
             🪜 12 Camadas
           </TabsTrigger>
-          <TabsTrigger value="raio-x" className="rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-card text-xs sm:text-sm px-3 py-2">
-            🧬 Raio-X
-          </TabsTrigger>
         </TabsList>
 
         <AnimatePresence mode="wait">
@@ -63,9 +59,6 @@ export default function QuemSouPage() {
             </TabsContent>
             <TabsContent value="camadas" className="mt-6" forceMount={activeTab === "camadas" ? true : undefined}>
               <LayersTab />
-            </TabsContent>
-            <TabsContent value="raio-x" className="mt-6" forceMount={activeTab === "raio-x" ? true : undefined}>
-              <BioRadarTab />
             </TabsContent>
           </motion.div>
         </AnimatePresence>

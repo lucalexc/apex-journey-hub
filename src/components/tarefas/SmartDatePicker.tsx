@@ -17,9 +17,13 @@ import { cn } from "@/lib/utils";
 interface SmartDatePickerProps {
   value: Date | undefined;
   onChange: (date: Date | undefined) => void;
+  onTimeClick?: () => void;
+  onRepeatClick?: () => void;
+  time?: string;
+  hasRepeat?: boolean;
 }
 
-export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
+export function SmartDatePicker({ value, onChange, onTimeClick, onRepeatClick, time, hasRepeat }: SmartDatePickerProps) {
   const [open, setOpen] = useState(false);
 
   const today = new Date();
@@ -54,8 +58,8 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
         <button
           type="button"
           className={cn(
-            "inline-flex w-full items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm transition-colors hover:bg-slate-50",
-            value ? "text-blue-600" : "text-slate-600"
+            "inline-flex w-full items-center gap-2 rounded-lg border border-border bg-card px-3 py-2.5 text-sm transition-colors hover:bg-secondary/50",
+            value ? "text-primary" : "text-muted-foreground"
           )}
         >
           <CalendarIcon className="h-4 w-4 shrink-0" />
@@ -68,44 +72,41 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
         sideOffset={16} 
         align="start" 
         avoidCollisions={true}
-        className="pointer-events-auto w-72 bg-white border border-slate-200 shadow-xl rounded-xl p-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] z-[9999]"
+        className="pointer-events-auto w-72 bg-card border border-border shadow-xl rounded-xl p-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] z-[9999]"
       >
-        <PopoverPrimitive.Arrow className="fill-white" />
+        <PopoverPrimitive.Arrow className="fill-card" />
         
-        {/* Header with Close button */}
         <div className="flex justify-end pt-2 pr-2">
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="h-6 w-6 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            className="h-6 w-6 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
           >
             <X className="h-3.5 w-3.5" />
           </button>
         </div>
 
-        {/* Section 1: Shortcuts */}
         <div className="pb-0.5">
           {shortcuts.map((s) => (
             <button
               key={s.label}
               type="button"
               onClick={() => pick(s.date)}
-              className="w-full flex justify-between items-center px-3 py-1.5 hover:bg-slate-50 transition-colors text-[13px] text-slate-700"
+              className="w-full flex justify-between items-center px-3 py-1.5 hover:bg-secondary/50 transition-colors text-[13px] text-foreground"
             >
               <span className="flex items-center gap-2">
                 <s.icon className={cn("h-3.5 w-3.5", s.iconColor)} />
                 <span>{s.label}</span>
               </span>
               {s.hint && (
-                <span className="text-[11px] text-slate-400 capitalize">{s.hint}</span>
+                <span className="text-[11px] text-muted-foreground capitalize">{s.hint}</span>
               )}
             </button>
           ))}
         </div>
 
-        <div className="border-b border-slate-100" />
+        <div className="border-b border-border" />
 
-        {/* Section 2: Compact Calendar */}
         <div className="flex justify-center">
           <Calendar
             mode="single"
@@ -120,41 +121,54 @@ export function SmartDatePicker({ value, onChange }: SmartDatePickerProps) {
               caption: "flex justify-center pt-0.5 relative items-center",
               caption_label: "text-xs font-medium",
               nav: "space-x-1 flex items-center",
-              nav_button: "h-6 w-6 bg-transparent p-0 opacity-50 hover:opacity-100 inline-flex items-center justify-center rounded-md border border-slate-200 text-slate-600",
+              nav_button: "h-6 w-6 bg-transparent p-0 opacity-50 hover:opacity-100 inline-flex items-center justify-center rounded-md border border-border text-foreground",
               nav_button_previous: "absolute left-0",
               nav_button_next: "absolute right-0",
               table: "w-full border-collapse",
               head_row: "flex",
-              head_cell: "text-slate-500 rounded-md w-8 font-normal text-[11px]",
+              head_cell: "text-muted-foreground rounded-md w-8 font-normal text-[11px]",
               row: "flex w-full mt-1",
-              cell: "h-8 w-8 text-center text-[12px] p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected])]:bg-blue-50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-              day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 rounded-md hover:bg-slate-100 transition-colors inline-flex items-center justify-center",
+              cell: "h-8 w-8 text-center text-[12px] p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected])]:bg-primary/10 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+              day: "h-8 w-8 p-0 font-normal aria-selected:opacity-100 rounded-md hover:bg-secondary transition-colors inline-flex items-center justify-center",
               day_range_end: "day-range-end",
-              day_selected: "!bg-blue-600 !text-white hover:!bg-blue-700 focus:!bg-blue-600 focus:!text-white",
-              day_today: "bg-blue-50 text-blue-600 font-semibold",
-              day_outside: "text-slate-300 opacity-50",
-              day_disabled: "text-slate-300 opacity-50",
+              day_selected: "!bg-primary !text-primary-foreground hover:!bg-primary/90 focus:!bg-primary focus:!text-primary-foreground",
+              day_today: "bg-primary/10 text-primary font-semibold",
+              day_outside: "text-muted-foreground opacity-50",
+              day_disabled: "text-muted-foreground opacity-50",
               day_hidden: "invisible",
             }}
           />
         </div>
 
-        <div className="border-b border-slate-100" />
+        <div className="border-b border-border" />
 
-        {/* Section 3: Footer */}
         <div className="p-2 flex gap-2">
           <button
             type="button"
-            onClick={(e) => { e.preventDefault(); setOpen(false); }}
-            className="flex-1 border border-slate-200 text-slate-500 hover:bg-slate-50 text-[12px] py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              onTimeClick?.();
+            }}
+            className={cn(
+              "flex-1 border text-[12px] py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-colors",
+              time ? "border-primary/30 text-primary bg-primary/5" : "border-border text-muted-foreground hover:bg-secondary/50"
+            )}
           >
             <Clock className="h-3 w-3" />
-            Hora
+            {time || "Hora"}
           </button>
           <button
             type="button"
-            onClick={(e) => { e.preventDefault(); setOpen(false); }}
-            className="flex-1 border border-slate-200 text-slate-500 hover:bg-slate-50 text-[12px] py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              onRepeatClick?.();
+            }}
+            className={cn(
+              "flex-1 border text-[12px] py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-colors",
+              hasRepeat ? "border-primary/30 text-primary bg-primary/5" : "border-border text-muted-foreground hover:bg-secondary/50"
+            )}
           >
             <Repeat className="h-3 w-3" />
             Repetir

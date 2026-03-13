@@ -19,7 +19,6 @@ import TarefasPage from "@/pages/TarefasPage";
 import MetasPage from "@/pages/MetasPage";
 import RotinaPage from "@/pages/RotinaPage";
 import QuemSouPage from "@/pages/QuemSouPage";
-import BibliotecaPage from "@/pages/BibliotecaPage";
 import LandingPage from "@/pages/LandingPage";
 import NotFound from "./pages/NotFound";
 
@@ -41,7 +40,6 @@ const App = () => (
             <Route path="/missoes" element={<MissoesPage />} />
             <Route path="/missoes/:id" element={<MissaoAtivaPage />} />
             <Route path="/quem-sou" element={<QuemSouPage />} />
-            <Route path="/biblioteca" element={<BibliotecaPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
